@@ -6,7 +6,7 @@ function Plugin(props) {
     getFilesFromEvent: (event) => myCustomFileGetter(event)
   })
   return (
-    <section className="container">
+    <section className="container" style={{ marginTop: '30px' }}>
       <div {...getRootProps({className: 'dropzone'})}>
         <input {...getInputProps()}  webkitdirectory="" />
         <p>Drag 'n' drop some files here, or click to select files</p>
