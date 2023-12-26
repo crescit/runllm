@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect } from "react";
+import { useSpeechRecognition } from 'react-speech-kit';
+
 import styles from './page.module.css'
 import DirectoryPicker from "./directorypicker";
 import HalEye from './hal'
@@ -16,6 +18,14 @@ export default function Home() {
     " I know I've made some very poor decisions recently, but I can give you my complete assurance that my work will be back to normal."
   ]
 
+  const { listen, listening, stop } = useSpeechRecognition({
+    onResult: (result) => {
+      // Handle the recognized speech result
+      console.log("Speech Recognized:", result);
+      changeText(result);
+    },
+  });
+
   const [text, changeText] = useState(halQuotes[Math.floor(Math.random() * halQuotes.length)])
 
   useEffect(() => {
@@ -25,6 +35,7 @@ export default function Home() {
   const onRecord = () => {
     changeText(halQuotes[Math.floor(Math.random() * halQuotes.length)])
     console.log(text)
+    listen()
   }
 
   return (
@@ -40,7 +51,7 @@ export default function Home() {
         <SinusoidalSpeechBubble text={text}/>
         <DirectoryPicker/>
         <div style={{'display':'flex' , 'flexDirection': 'row'}}>
-          <PlayButton onPlay={() => onRecord()}/>
+          <PlayButton onPlay={() => onRecord()} onStop={() => stop()}/>
         </div>
       </div>
     </main>
