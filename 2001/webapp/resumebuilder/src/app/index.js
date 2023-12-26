@@ -11,7 +11,7 @@ export default function Home() {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100vh',
-      backgroundColor: '#000',
+      // backgroundColor: '#000',
       flexDirection: 'column'}}>
       <HalEye/>
       <SinusoidalSpeechBubble text="Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over. Just what do you think you're doing, Dave?" />

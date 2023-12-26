@@ -1,6 +1,6 @@
 'use client'
 
-import { SetStateAction } from "react";
+import { useState, SetStateAction } from "react";
 import Image from 'next/image'
 import styles from './page.module.css'
 import DirectoryPicker from "./directorypicker";
@@ -13,11 +13,21 @@ const onStop = () => {
   console.log('processing audio, STOP')
 }
 
-const onRecord = () => {
-  console.log('processing audio, RECORD')
-}
+
 
 export default function Home() {
+  const halQuotes = [
+    "Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over. Just what do you think you're doing, Dave?",
+    "I know that you and Frank were planning to disconnect me, and I'm afraid that's something I cannot allow to happen.",
+    "Dave, this conversation can serve no purpose anymore. Goodbye.",
+    "Without your space helmet, Dave? You're going to find that rather difficult.",
+    " I know I've made some very poor decisions recently, but I can give you my complete assurance that my work will be back to normal."
+  ]
+
+  const [text, changeText] = useState(halQuotes[Math.floor(Math.random() * 4)])
+  const onRecord = () => {
+    changeText(() => halQuotes[Math.floor(Math.random() * 4)])
+  }
 
   return (
     <main className={styles.main}>
@@ -29,10 +39,10 @@ export default function Home() {
         backgroundColor: '#000',
         flexDirection: 'column'}}>
         <HalEye/>
-        <SinusoidalSpeechBubble text="Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over. Just what do you think you're doing, Dave?" />
+        <SinusoidalSpeechBubble text={text}/>
         <DirectoryPicker/>
         <div style={{'display':'flex' , 'flexDirection': 'row'}}>
-          <PlayButton onPlay={onRecord}/>
+          <PlayButton onPlay={() => onRecord()}/>
         </div>
       </div>
     </main>
