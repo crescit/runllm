@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const SinusoidalSpeechBubble = ({ text }) => {
+    const [clientData, setClientData] = useState(null);
     useEffect(() => {
       const keyframes = `
         @keyframes sinusoidal-animation {
@@ -16,11 +17,11 @@ const SinusoidalSpeechBubble = ({ text }) => {
       const styleTag = document.createElement('style');
       styleTag.innerHTML = keyframes;
       document.head.appendChild(styleTag);
-  
+      setClientData(text);
       return () => {
         document.head.removeChild(styleTag);
       };
-    }, []);
+    }, [text]);
   
     const bubbleStyle = {
         position: 'relative',
@@ -61,7 +62,7 @@ const SinusoidalSpeechBubble = ({ text }) => {
       <div style={bubbleStyle}>
         <p style={textStyle} alt={"output from scifi robot"}>
           <span style={waveformStyle}></span>
-          {text}
+          {clientData}
         </p>
       </div>
     );

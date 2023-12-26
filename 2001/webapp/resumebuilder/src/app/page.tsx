@@ -1,13 +1,11 @@
 'use client'
 
-import { useState, SetStateAction } from "react";
-import Image from 'next/image'
+import { useState, useEffect } from "react";
 import styles from './page.module.css'
 import DirectoryPicker from "./directorypicker";
 import HalEye from './hal'
 import SinusoidalSpeechBubble from './sine'
 import PlayButton from './PlayButton'
-
 
 export default function Home() {
   const halQuotes = [
@@ -19,8 +17,14 @@ export default function Home() {
   ]
 
   const [text, changeText] = useState(halQuotes[Math.floor(Math.random() * halQuotes.length)])
+
+  useEffect(() => {
+    changeText(halQuotes[Math.floor(Math.random() * halQuotes.length)]);
+  }, []); 
+
   const onRecord = () => {
     changeText(halQuotes[Math.floor(Math.random() * halQuotes.length)])
+    console.log(text)
   }
 
   return (
