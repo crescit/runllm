@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDropzone } from 'react-dropzone';
+import StopButton from './StopButton';
 
 function Plugin(props) {
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
@@ -9,7 +10,7 @@ function Plugin(props) {
     <section className="container" style={{ marginTop: '30px' }}>
       <div {...getRootProps({className: 'dropzone'})}>
         <input {...getInputProps()}  webkitdirectory="" />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <StopButton />
       </div>
     </section>
   )

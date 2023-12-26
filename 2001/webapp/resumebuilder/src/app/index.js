@@ -14,7 +14,7 @@ export default function Home() {
       backgroundColor: '#000',
       flexDirection: 'column'}}>
       <HalEye/>
-      <SinusoidalSpeechBubble text="Hello World!" />
+      <SinusoidalSpeechBubble text="Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over. Just what do you think you're doing, Dave?" />
     </div>
   )
 }
