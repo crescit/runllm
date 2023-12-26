@@ -25,6 +25,7 @@ const HalEye = () => {
   return (
     <div style={{ position: 'relative', textAlign: 'center' }}>
       <div
+        alt={"robotic scifi speaking eye"}
         className="camera-enclosure"
         aria-label="Camera Enclosure"
         style={{

@@ -32,4 +32,4 @@ async function myCustomFileGetter(event) {
   console.log(files);
   // files returned from this function will be acceptedFiles
   return files
-}
+} 

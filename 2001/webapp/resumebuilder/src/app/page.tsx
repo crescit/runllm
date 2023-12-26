@@ -6,13 +6,7 @@ import styles from './page.module.css'
 import DirectoryPicker from "./directorypicker";
 import HalEye from './hal'
 import SinusoidalSpeechBubble from './sine'
-import StopButton from './StopButton'
 import PlayButton from './PlayButton'
-
-const onStop = () => {
-  console.log('processing audio, STOP')
-}
-
 
 
 export default function Home() {
@@ -24,9 +18,9 @@ export default function Home() {
     " I know I've made some very poor decisions recently, but I can give you my complete assurance that my work will be back to normal."
   ]
 
-  const [text, changeText] = useState(halQuotes[Math.floor(Math.random() * 4)])
+  const [text, changeText] = useState(halQuotes[Math.floor(Math.random() * halQuotes.length)])
   const onRecord = () => {
-    changeText(() => halQuotes[Math.floor(Math.random() * 4)])
+    changeText(() => halQuotes[Math.floor(Math.random() * halQuotes.length)])
   }
 
   return (

@@ -28,7 +28,10 @@ const PlayButton = ({ onPlay }) => {
   }, [showLoading, onPlay]);
 
   return (
-    <button className={`button play-button ${isRecording ? 'recording' : ''}`} onClick={handleClick}>
+    <button 
+        className={`button play-button ${isRecording ? 'recording' : ''}`} 
+        onClick={handleClick}
+        alt={"record audio, hit again to stop recording"}>
       {showLoading ? (
         <div className="loading-circle"></div>
       ) : (

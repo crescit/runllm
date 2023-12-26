@@ -59,7 +59,7 @@ const SinusoidalSpeechBubble = ({ text }) => {
   
     return (
       <div style={bubbleStyle}>
-        <p style={textStyle}>
+        <p style={textStyle} alt={"output from scifi robot"}>
           <span style={waveformStyle}></span>
           {text}
         </p>
