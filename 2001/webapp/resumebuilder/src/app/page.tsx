@@ -20,7 +20,7 @@ export default function Home() {
 
   const [text, changeText] = useState(halQuotes[Math.floor(Math.random() * halQuotes.length)])
   const onRecord = () => {
-    changeText(() => halQuotes[Math.floor(Math.random() * halQuotes.length)])
+    changeText(halQuotes[Math.floor(Math.random() * halQuotes.length)])
   }
 
   return (
