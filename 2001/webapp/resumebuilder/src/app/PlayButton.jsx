@@ -33,11 +33,14 @@ const PlayButton = ({ onPlay, onStop }) => {
       className={`button play-button ${isRecording ? 'recording' : ''}`}
       onClick={handleClick}
       aria-label={isRecording ? 'Stop recording' : 'Start recording'}>
-      {showLoading ? (
-        <div className="loading-circle"></div>
-      ) : (
-        isRecording ? 'Stop' : 'Record'
-      )}
+       {
+        isRecording ? <div>Stop <div className="loading-circle" styles={{display: 'inline-flex',
+          margin: 'auto',
+          padding: '8px',
+          marginLeft: '10px',
+          marginTop: '0px',
+          marginBottom: '-5px'}}></div></div>: 'Record'
+      }
     </button>
   );
 };
