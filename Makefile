@@ -5,12 +5,11 @@ install_node:
     sudo apt install nodejs
 
 install_python:
-	add-apt-repository ppa:deadsnakes/ppa -y
-	sudo apt install python3.8 -y
+    add-apt-repository ppa:deadsnakes/ppa -y && \
+    sudo apt install python3.8 -y
 
 run_llm_build:
-	
-	
+    cd ~/llm && \
+    bash build.sh
 
-all: install_node install_python
-#make install_node
+all: install_node install_python run_llm_build
