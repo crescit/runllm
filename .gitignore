@@ -1,3 +1,3 @@
-/2001/webapp/node_modules
-2001/.venv
-2001/resumes
+/webapp/node_modules
+/.venv
+/resumes
