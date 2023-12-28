@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -49,18 +50,17 @@ func postPrompt(c *gin.Context) {
 	}
 	splits := strings.SplitAfter(out, newPrompt.Prompt)
 	fmt.Printf("%v\n", splits)
-	//c.
 	c.String(http.StatusOK, splits[1])
-}
-
-func postPythonPrompt(c *gin.Context) {
-	postPrompt(c)
 }
 
 func main() {
 	router := gin.Default()
+	// ! only run when there's db migrations to be made
+	if os.Getenv("RUN_POSTGRES_MIGRATIONS") == "true" {
+		//pg.RunMigrations()
+	}
+
 	router.POST("/prompt", postPrompt)
-	router.POST("/prompt-python", postPythonPrompt)
 
 	router.Run("localhost:8080")
 }

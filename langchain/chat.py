@@ -21,7 +21,7 @@ print("prepared template")
 # TODO make this env var 
 llm = CTransformers(model=os.environ['MODEL_PATH'],
                     model_type='llama',
-                    config={'max_new_tokens': 256, 'temperature': 0.01})
+                    config={'max_new_tokens': 512, 'temperature': 0.01})
 print("loaded wizardlm")
 # load the interpreted information from the local database
 embeddings = HuggingFaceEmbeddings(
@@ -43,6 +43,7 @@ print("loaded receiver")
 print("passing prompt to llm")
 # ask the AI chat about information in our local files
 prompt = "Give me information about the Apple jobs posted on Dec 27, 2023. Write ten questions for job candidates for these jobs."
+print("prompt = " + prompt)
 output = qa_llm({'query': prompt})
 print(output["result"])
 print("done")
