@@ -3,14 +3,23 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
 
-	pg "github.com/crescit/runllm/apigateway/postgres"
+	pg "github.com/crescit/runllm/api-gateway/postgres"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
+
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
 
 func runLlama(prompt string) (string, error) {
 	fmt.Println(prompt)

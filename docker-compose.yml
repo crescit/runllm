@@ -11,6 +11,7 @@ services:
       - "/app"
     environment: 
       - GO111MODULE=on
+      - PG_DBNAME=postgres
       - PG_USER=postgres
       - PG_HOST=db
       - PG_PASS=postgres
