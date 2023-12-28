@@ -1,0 +1,4 @@
+MODEL_PATH="/Users/josh/Documents/Projects/runllm/llm/llama.cpp/models/ggml-vicuna-7b-1.1-q4_1.bin"
+JOB_DIRECTORY="/Users/josh/Documents/Projects/runllm/langchain/jobs"
+RESUME_DIRECTORY="/Users/josh/Documents/Projects/runllm/langchain/resumes"
+FAISE_DIRECTORY="/Users/josh/Documents/Projects/runllm/langchain/faiss_2023-12-27T20:04:36.388444"

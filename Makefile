@@ -8,8 +8,13 @@ install_python:
     add-apt-repository ppa:deadsnakes/ppa -y && \
     sudo apt install python3.8 -y
 
-run_llm_build:
+install_llm:
     cd ~/llm && \
     bash build.sh
 
-all: install_node install_python run_llm_build
+install_langchain:
+    cd ~/langchain && \
+    pip3 instal langchain
+    #pip3 install -r requirements.txt
+
+all: install_node install_python install_llm install_langchain
