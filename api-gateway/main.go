@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strings"
 
+	pg "github.com/crescit/runllm/apigateway/postgres"
 	"github.com/gin-gonic/gin"
 )
 
@@ -57,7 +58,7 @@ func main() {
 	router := gin.Default()
 	// ! only run when there's db migrations to be made
 	if os.Getenv("RUN_POSTGRES_MIGRATIONS") == "true" {
-		//pg.RunMigrations()
+		pg.RunMigrations()
 	}
 
 	router.POST("/prompt", postPrompt)
