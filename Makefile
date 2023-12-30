@@ -14,7 +14,7 @@ install_llm:
 
 install_langchain:
     cd ~/langchain && \
-    pip3 instal langchain
+    pip3 install langchain
     #pip3 install -r requirements.txt
 
 all: install_node install_python install_llm install_langchain
