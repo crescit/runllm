@@ -40,7 +40,7 @@ const AddInterviewButton = () => {
             right: '10px',
             width: '30px',
             height: '30px',
-            backgroundColor: '#333',
+            backgroundColor: '#333  ',
             color: '#fff',
             fontSize: '18px',
             border: 'none',
