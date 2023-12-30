@@ -4,3 +4,4 @@ sentence-transformers==2.2.2
 faiss-cpu==1.7.4
 ctransformers==0.2.27
 flask==3.0.0
+pdfminer==20191125
