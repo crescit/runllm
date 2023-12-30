@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from './styles.css'
 
 const PlayButton = ({ onPlay, onStop }) => {
   const [isRecording, setIsRecording] = useState(false);

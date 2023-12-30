@@ -47,8 +47,10 @@ export default function Home() {
         height: '100vh',
         backgroundColor: '#000',
         flexDirection: 'column'}}>
-        <HalEye/>
-        <SinusoidalSpeechBubble text={text}/>
+        <container style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '75px' }}>
+          <HalEye/>
+          <SinusoidalSpeechBubble text={text}/>
+        </container>  
         <DirectoryPicker/>
         <div style={{'display':'flex' , 'flexDirection': 'row'}}>
           <PlayButton onPlay={() => onRecord()} onStop={() => stop()}/>
