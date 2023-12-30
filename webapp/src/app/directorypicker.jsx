@@ -10,8 +10,8 @@ function AcceptMaxFiles(props) {
   } = useDropzone({    
     maxFiles:1,
     accept: {
-      '.txt': [],
-      '.pdf': []
+      'text/plain': [],
+      'application/pdf': []
     }
   });
 
