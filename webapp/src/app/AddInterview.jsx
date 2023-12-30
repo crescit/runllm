@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import DirectoryPicker from './directorypicker'
 
 const AddInterviewButton = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -10,6 +11,16 @@ const AddInterviewButton = () => {
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const [numericValue, setNumericValue] = useState(5);
+
+  const increaseValue = () => {
+    setNumericValue((prevValue) => prevValue + 1);
+  };
+
+  const decreaseValue = () => {
+    setNumericValue((prevValue) => Math.max(0, prevValue - 1));
   };
 
   const customStyles = {
@@ -33,6 +44,43 @@ const AddInterviewButton = () => {
         style={customStyles} // Apply custom styles
       >
         <h2 style={{ textAlign: 'center' }}>Create Mock Interview</h2>
+        <div style={{display:'flex', flexDirection: 'row'}}>
+            <container style={{display:'flex', flexDirection: 'column', marginRight: '10px', marginTop: '25px'}}>
+                <h3>Upload Resume</h3>
+                    <DirectoryPicker/>
+                <h3>Add Job Description</h3>
+                    <DirectoryPicker/>
+            </container>
+            <container style={{display:'flex', flexDirection: 'column', marginLeft: '10px', marginTop: '25px' }}>
+                <h3 style={{ marginBottom: '15px' }}>Position</h3>
+                <input
+                    type="text"
+                    id="positionBox"
+                    name="positionBox"
+                    aria-label="Enter job position here"
+                    placeholder="Enter job position here"
+                />
+                <h3 style={{ marginBottom: '15px', marginTop: '15px' }}>Interview Length (min.)</h3>
+                <input
+                    type="number"
+                    id="numericInput"
+                    name="interviewLength"
+                    aria-label="Enter interview length numeric minutes"
+                    min="3"
+                    step="1"
+                />
+                <h3 style={{ marginBottom: '15px' }} for="dropdown">Interview Type</h3>
+                <select id="dropdown" name="dropdown" aria-label="Select an interview type">
+                    <option value="" disabled selected hidden>
+                        Select an option
+                    </option>
+                    <option value="PHONE_SCREEN">Phone Screen</option>
+                    <option value="BEHAVIORAL">Behavioral Interview</option>
+                    <option value="CASE">Case Interview</option>
+                </select>
+            </container>
+        </div>
+
         <button
           style={{
             position: 'absolute',

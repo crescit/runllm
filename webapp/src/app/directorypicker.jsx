@@ -40,13 +40,6 @@ function AcceptMaxFiles(props) {
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click</p>
       </div>
-      {/* <aside>
-        <h2>File Information</h2>
-        <h3>Accepted files</h3>
-        <ul aria-live="polite" aria-atomic="true">{acceptedFileItems}</ul>
-        <h3>Rejected files</h3>
-        <ul aria-live="polite" aria-atomic="true">{fileRejectionItems}</ul>
-      </aside> */}
     </section>
   );
 }
