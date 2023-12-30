@@ -53,7 +53,6 @@ export default function Home() {
           <SinusoidalSpeechBubble text={text}/>
         </container> 
         <AddInterviewButton/>
-        <DirectoryPicker/>
         <div style={{'display':'flex' , 'flexDirection': 'row'}}>
           <PlayButton onPlay={() => onRecord()} onStop={() => stop()}/>
         </div>

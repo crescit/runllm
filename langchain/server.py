@@ -1,5 +1,6 @@
 import logging
 import datetime
+from flask_cors import cross_origin
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 from langchain.document_loaders import DirectoryLoader, TextLoader
@@ -12,6 +13,7 @@ import threading
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['CORS_ORIGINS'] =  ["http://localhost:3000", "http://localhost:8080", "http://localhost"]
 allowed_extensions = {'pdf', 'txt'}
 
 def configure_logging():

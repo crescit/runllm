@@ -46,10 +46,14 @@ const AddInterviewButton = () => {
         <h2 style={{ textAlign: 'center' }}>Create Mock Interview</h2>
         <div style={{display:'flex', flexDirection: 'row'}}>
             <container style={{display:'flex', flexDirection: 'column', marginRight: '10px', marginTop: '25px'}}>
-                <h3>Upload Resume</h3>
-                    <DirectoryPicker/>
-                <h3>Add Job Description</h3>
-                    <DirectoryPicker/>
+                <div>
+                    <h3>Upload Resume</h3>
+                    <DirectoryPicker file_type={'RESUME'}/>
+                </div>
+                <div style={{ marginTop: '30px' }}>
+                    <h3>Add Job Description</h3>
+                    <DirectoryPicker file_type={'JOB'}/>
+                </div>
             </container>
             <container style={{display:'flex', flexDirection: 'column', marginLeft: '10px', marginTop: '25px' }}>
                 <h3 style={{ marginBottom: '15px' }}>Position</h3>
@@ -70,7 +74,7 @@ const AddInterviewButton = () => {
                     step="1"
                 />
                 <h3 style={{ marginBottom: '15px' }} for="dropdown">Interview Type</h3>
-                <select id="dropdown" name="dropdown" aria-label="Select an interview type">
+                <select id="dropdown" name="dropdown" aria-label="Select an interview type" defaultValue={""}>
                     <option value="" disabled selected hidden>
                         Select an option
                     </option>

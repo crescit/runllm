@@ -1,7 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {useDropzone} from 'react-dropzone';
+import axios from 'axios';
 
-function AcceptMaxFiles(props) {
+const AcceptMaxFiles = ({ file_type, ...props }) => {
+  const [FILETYPE, setFile] = useState()
+
+  useEffect(() => {
+    setFile(file_type)
+  }, [file_type]);
+  
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader()
+
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+      reader.onload = () => {
+      // Do whatever you want with the file contents
+        const binaryStr = reader.result
+        const formData = new FormData();
+        formData.append('file', file);
+        console.log(process.env.NEXT_PUBLIC_LANGSERVER_URL, FILETYPE, file_type)
+        let path = `${process.env.NEXT_PUBLIC_LANGSERVER_URL}/write_job_file`
+        if(file_type == 'RESUME'){
+          path = `${process.env.NEXT_PUBLIC_LANGSERVER_URL}/write_resume_file`
+        }
+        axios.post(path, formData)
+          .then((response) => {
+            // Handle the response if needed
+            console.log('File upload successful:', response.data);
+          })
+          .catch((error) => {
+            // Handle the error
+            console.error('Error uploading file:', error);
+        });
+      }
+      reader.readAsArrayBuffer(file)
+    })
+    
+  }, [])
+
+
   const {
     acceptedFiles,
     fileRejections,
@@ -12,31 +51,13 @@ function AcceptMaxFiles(props) {
     accept: {
       'text/plain': [],
       'application/pdf': []
-    }
+    },
+    onDrop
   });
-
-  const acceptedFileItems = acceptedFiles.map(file => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
-
-  const fileRejectionItems = fileRejections.map(({ file, errors  }) => { 
-   return (
-     <li key={file.path}>
-          {file.path} - {file.size} bytes
-          <ul>
-            {errors.map(e => <li key={e.code}>{e.message}</li>)}
-         </ul>
-
-     </li>
-   ) 
-  });
-  
 
   return (
-    <section class="container">
-      <div role="button" tabindex="0" aria-label="File Drop Zone" {...getRootProps({ role: 'button', className: 'dropzone' })}>
+    <section className="container">
+      <div role="button" tabIndex="0" aria-label="File Drop Zone" {...getRootProps({ role: 'button', className: 'dropzone' })}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click</p>
       </div>
