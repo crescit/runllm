@@ -8,6 +8,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from pdfminer.utils import open_filename
 import os
+import threading
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -39,20 +40,23 @@ def configure_logging():
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
 
-def process_documents(directory, globs, embeddings_model_name):
-    all_documents = []
-    for glob in globs:
-        loader = DirectoryLoader(directory, glob=glob)
-        documents = loader.load()
-        all_documents.extend(documents)
+def process_documents_async(directory, globs, embeddings_model_name):
+    try:
+        all_documents = []
+        for glob in globs:
+            loader = DirectoryLoader(directory, glob=glob)
+            documents = loader.load()
+            all_documents.extend(documents)
 
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-    texts = splitter.split_documents(all_documents)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+        texts = splitter.split_documents(all_documents)
 
-    embeddings = HuggingFaceEmbeddings(model_name=embeddings_model_name, model_kwargs={'device': 'cpu'})
-    db = FAISS.from_documents(texts, embeddings)
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    db.save_local(f"faiss_{timestamp}")
+        embeddings = HuggingFaceEmbeddings(model_name=embeddings_model_name, model_kwargs={'device': 'cpu'})
+        db = FAISS.from_documents(texts, embeddings)
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        db.save_local(f"faiss_{timestamp}")
+    except Exception as e:
+        print(f"An error occurred during document processing: {str(e)}")
 
 def upload_file(request, upload_folder, allowed_extensions):
     try:
@@ -76,34 +80,30 @@ def upload_file(request, upload_folder, allowed_extensions):
 
     except Exception as e:
         return {'status': 'error', 'message': f'An error occurred: {str(e)}'}, 500
-
-# curl -X POST -H "Content-Type: application/json" -d '{"filename": "example.txt", "content": "Hello, this is the content of the file!"}' http://127.0.0.1:5001/write_job_file
-@app.route('/write_job_file', methods=['POST'])
-def write_job_file():
-    response = {} 
-    code = 200
-    try:
-        response, code = upload_file(request, os.environ['JOB_DIRECTORY'], allowed_extensions)
-        process_documents(os.environ['JOB_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")
-    except Exception as e:
-        response = {'status': 'error', 'message': f'An error occurred: {str(e)}'}
-        code = 500
-
-    return jsonify(response), code
-
-# curl -X POST -H "Content-Type: application/json" -d '{"filename": "example.txt", "content": "Hello, this is the content of the file!"}' http://127.0.0.1:5001/write_resume_file
+        
+# Update the write_resume_file endpoint
 @app.route('/write_resume_file', methods=['POST'])
 def write_resume_file():
-    response = {}
-    code = 200
     try:
-        response, code = upload_file(request, os.environ['RESUME_DIRECTORY'], allowed_extensions)
-        process_documents(os.environ['RESUME_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")
+        response = upload_file(request, os.environ['RESUME_DIRECTORY'], allowed_extensions)
+        threading.Thread(target=process_documents_async, args=(os.environ['RESUME_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
+        return jsonify(response), 200
     except Exception as e:
         response = {'status': 'error', 'message': f'An error occurred: {str(e)}'}
         code = 500
+        return jsonify(response), code
 
-    return jsonify(response), code
+# Update the write_job_file endpoint
+@app.route('/write_job_file', methods=['POST'])
+def write_job_file():
+    try:
+        response = upload_file(request, os.environ['JOB_DIRECTORY'], allowed_extensions)
+        threading.Thread(target=process_documents_async, args=(os.environ['JOB_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
+        return jsonify(response), 200
+    except Exception as e:
+        response = {'status': 'error', 'message': f'An error occurred: {str(e)}'}
+        code = 500
+        return jsonify(response), code
 
 if __name__ == '__main__':
     configure_logging()
