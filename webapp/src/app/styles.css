@@ -281,11 +281,11 @@
     background-color: #ccc; /* Gray background color */
   }
   
-  .stop-button {
+  .add-button {
     position: relative;
   }
   
-  .stop-button .background-square {
+  .add-button .background-square {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -303,6 +303,11 @@
     border-top: 4px solid #3498db; /* Color of the loading circle */
     border-radius: 50%;
     animation: spin 1s linear infinite; /* Optional: Add a spinning animation */
+    display: inline-flex;
+    margin: auto;
+    padding: 5px;
+    margin-left: 5px;
+    margin-bottom: -3px;
   }
   
   @keyframes spin {

@@ -23,6 +23,9 @@ func init() {
 
 func runLlama(prompt string) (string, error) {
 	fmt.Println(prompt)
+
+	// going to have the python service most likely use the llm
+
 	//Wizard-Vicuna-30B-Uncensored.ggmlv3.q6_K.bin
 	// cmd := exec.Command("/Users/jjaquez/Documents/llm/prompt/llama.cpp/main", "-t", "10", "-ngl", "1", "-m", "/Users/jjaquez/Documents/llm/prompt/llama.cpp/models/wizardlm-13b-v1.0-uncensored.ggmlv3.q4_1.bin", "--prompt", "\""+prompt+"\"")
 	// ./main -t 10 -ngl 32 -m Wizard-Vicuna-30B-Uncensored.ggmlv3.q5_0.bin --color -c 2048 --temp 0.7 --repeat_penalty 1.1 -n -1 -p "### Instruction: Write a story about llamas\n### Response:"

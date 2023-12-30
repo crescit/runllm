@@ -8,6 +8,7 @@ import DirectoryPicker from "./directorypicker";
 import HalEye from './hal'
 import SinusoidalSpeechBubble from './sine'
 import PlayButton from './PlayButton'
+import AddInterviewButton from './AddInterview';
 
 export default function Home() {
   const halQuotes = [
@@ -47,9 +48,11 @@ export default function Home() {
         height: '100vh',
         backgroundColor: '#000',
         flexDirection: 'column'}}>
-        <HalEye/>
-        <SinusoidalSpeechBubble text={text}/>
-        <DirectoryPicker/>
+        <container style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '75px' }}>
+          <HalEye/>
+          <SinusoidalSpeechBubble text={text}/>
+        </container> 
+        <AddInterviewButton/>
         <div style={{'display':'flex' , 'flexDirection': 'row'}}>
           <PlayButton onPlay={() => onRecord()} onStop={() => stop()}/>
         </div>

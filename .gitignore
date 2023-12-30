@@ -1,4 +1,8 @@
+/*/.env
 /webapp/node_modules
 /.venv
-/resumes
 /webapp/.next/*
+/langchain/jobs/*
+/langchain/app.log
+/langchain/resumes/*
+/langchain/faiss*
