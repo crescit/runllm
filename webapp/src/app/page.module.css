@@ -3,7 +3,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
+  padding-top: 1rem;
+  padding-bottom: 6rem;
   min-height: 100vh;
 }
 
@@ -240,30 +241,30 @@
 }
 
 .stop-button {
-position: relative;
+  position: relative;
 }
 
 .stop-button:before,
 .stop-button:after {
-content: '';
-position: absolute;
-background-color: #ffffff;
+  content: '';
+  position: absolute;
+  background-color: #ffffff;
 }
 
 .stop-button:before {
-width: 4px;
-height: 16px;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
+  width: 4px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .stop-button:after {
-width: 16px;
-height: 4px;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
+  width: 16px;
+  height: 4px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .play-button {
   background-color: #00ff00;
@@ -294,4 +295,11 @@ transform: translate(-50%, -50%);
   height: 100%;
   background-color: #ccc; /* Gray background color */
   z-index: -1;
+}
+
+.valueprops {
+  margin: 5%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
