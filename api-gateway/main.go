@@ -82,8 +82,8 @@ func main() {
 
 	router.POST("/users", users.CreateUser)
 	router.POST("/resumes", resumes.CreateResume)
-	router.POST("/answers", answers.CreateAnswer)
 	router.POST("/jobs", jobs.CreateJob)
+	router.POST("/answers", answers.CreateAnswer)
 	router.POST("/questions", questions.CreateQuestion)
 	router.POST("/sessions", sessions.CreateSession)
 	router.POST("/interviews", interviews.CreateInterview)
