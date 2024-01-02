@@ -73,7 +73,7 @@ def process_documents_async(prompt_info, chat_type, user_id, directory, globs, e
         if chat_type == "JOB":
             prompt = "Give me ten questions for a qualified candidate for the job posting: " + prompt_info[0]
         if chat_type == "RESUME":
-            prompt = "Give me ten questions for candidate: " + prompt_info[1] + "for the job posting: " + prompt_info[0]
+            prompt = "Give me ten questions for candidate: " + prompt_info[1] + " for the job posting: " + prompt_info[0]
         threading.Thread(target=chat_with_model, args=(prompt, chat_type, model_path, faiss_path)).start()
     except Exception as e:
         print(f"An error occurred during document processing: {str(e)}")
