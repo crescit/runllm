@@ -31,6 +31,9 @@ const AddInterviewButton = () => {
       left: '50%', // Center horizontally
       transform: 'translate(-50%, -50%)', // Center the modal
       background: 'rgba(0, 0, 0, 1)',
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'column',
     },
   };
 

@@ -2,15 +2,27 @@
 
 import { useState, useEffect } from 'react';
 import { useSpeechRecognition } from 'react-speech-kit';
+import Modal from 'react-modal';
+
 
 import styles from './page.module.css';
-import DirectoryPicker from './directorypicker';
 import HalEye from './hal';
 import SinusoidalSpeechBubble from './sine';
 import PlayButton from './PlayButton';
 import AddInterviewButton from './AddInterview';
 
 export default function Home() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+
   const halQuotes = [
     "Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over. Just what do you think you're doing, Dave?",
     "I know that you and Frank were planning to disconnect me, and I'm afraid that's something I cannot allow to happen.",
@@ -41,6 +53,17 @@ export default function Home() {
     listen();
   };
 
+  const customStyles = {
+    content: {
+      width: '66%', // Set your desired width
+      height: '66%', // Set your desired height
+      top: '50%', // Center vertically
+      left: '50%', // Center horizontally
+      transform: 'translate(-50%, -50%)', // Center the modal
+      background: 'rgba(0, 0, 0, 1)',
+    },
+  };
+
   return (
     <main>
       <div
@@ -55,7 +78,7 @@ export default function Home() {
         <h1>tutr.ai</h1>
         <h3 style={{ color: 'red' }}>Elevate Your Interview Game</h3>
       </div>
-      <p
+      {/* <p
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -65,14 +88,14 @@ export default function Home() {
       >
         Run an AI mock interview anytime by providing some basic information to
         build that repetetive muscle and better prepare for your next interview
-      </p>
+      </p> */}
       <div className={styles.main}>
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '100vh',
+            // height: '100vh',
             backgroundColor: '#000',
             flexDirection: 'column',
           }}
@@ -82,7 +105,6 @@ export default function Home() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              marginBottom: '75px',
             }}
           >
             <HalEye />
@@ -94,7 +116,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div
+      {/* <div
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -110,19 +132,56 @@ export default function Home() {
         <p className={styles.valueprops}>Tangible Results</p>
         <p className={styles.valueprops}>Interview Anytime</p>
         <p className={styles.valueprops}>Identify Strengths & Weaknesses</p>
+      </div> */}
+      <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+        <button style={{ display: 'flex'}} className={'button'} onClick={openModal}>
+          Provide Feedback
+        </button>
       </div>
-      <p style={{ marginBottom: '50px' }} align='center'>
-        <iframe
-          src='https://docs.google.com/forms/d/e/1FAIpQLSftkTKMBDB3_w8BgTSfk6TpErw9Cps2sM2mcoBXNdsx4Y9s2g/viewform?embedded=true'
-          width='640'
-          height='649'
-          frameborder='0'
-          marginheight='0'
-          marginwidth='0'
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel='Feedback Modal'
+        style={customStyles} // Apply custom styles
+      >
+        <p style={{ marginBottom: '50px' }} align='center'>
+          <iframe
+            src='https://docs.google.com/forms/d/e/1FAIpQLSftkTKMBDB3_w8BgTSfk6TpErw9Cps2sM2mcoBXNdsx4Y9s2g/viewform?embedded=true'
+            width='640'
+            height='649'
+            frameborder='0'
+            marginheight='0'
+            marginWidth='0'
+          >
+            Loading…
+          </iframe>
+        </p>
+        <button
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            width: '30px',
+            height: '30px',
+            backgroundColor: '#333  ',
+            color: '#fff',
+            fontSize: '18px',
+            border: 'none',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={closeModal}
         >
-          Loading…
-        </iframe>
-      </p>
+          X
+        </button>
+      </Modal>
     </main>
   );
 }
