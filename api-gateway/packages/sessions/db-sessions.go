@@ -4,9 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	pg "github.com/crescit/runllm/api-gateway/postgres"
+	pg2 "github.com/crescit/runllm/api-gateway/postgres"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 type Session struct {
@@ -25,7 +26,7 @@ func CreateSession(c *gin.Context) {
 		return
 	}
 
-	db, err := pg.NewDatabase()
+	db, err := pg2.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
@@ -33,13 +34,15 @@ func CreateSession(c *gin.Context) {
 	}
 	defer db.Close()
 
-	_, err = db.Query("INSERT INTO session (name, timestamp, question_ids, answer_ids, user_id) VALUES ($1, $2, $3, $4, $5)",
-		session.Name, session.Timestamp, session.QuestionIDs, session.AnswerIDs, session.UserID)
+	session.ID = uuid.New()
+
+	_, err = db.Query("INSERT INTO session (id, name, timestamp, question_ids, answer_ids, user_id) VALUES ($1, $2, $3, $4, $5, $6)",
+		session.ID, session.Name, session.Timestamp, pq.Array(session.QuestionIDs), pq.Array(session.AnswerIDs), session.UserID)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting session")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting session"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Session created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Session created successfully", "session": session})
 }

@@ -43,13 +43,15 @@ func CreateAnswer(c *gin.Context) {
 	}
 	defer db.Close()
 
-	_, err = db.Query("INSERT INTO answers (q_id, score, text, user_id, timestamp) VALUES ($1, $2, $3, $4, $5)",
-		answer.QID, answer.Score, answer.Text, answer.UserID, answer.Timestamp)
+	answer.ID = uuid.New()
+
+	_, err = db.Query("INSERT INTO answers (id, q_id, score, text, user_id, timestamp) VALUES ($1, $2, $3, $4, $5, $6)",
+		answer.ID, answer.QID, answer.Score, answer.Text, answer.UserID, answer.Timestamp)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting answer")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting answer"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Answer created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Answer created successfully", "answer": answer})
 }

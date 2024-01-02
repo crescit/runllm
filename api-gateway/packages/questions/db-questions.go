@@ -17,7 +17,7 @@ type Question struct {
 }
 
 func CreateQuestion(c *gin.Context) {
-	var question Question // Assuming you have a struct named Question for the table
+	var question Question
 	if err := c.ShouldBindJSON(&question); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -31,12 +31,22 @@ func CreateQuestion(c *gin.Context) {
 	}
 	defer db.Close()
 
-	_, err = db.Query("INSERT INTO questions (text, cv_id) VALUES ($1, $2)", question.Text, question.CVID)
-	if err != nil {
-		log.Printf("%v %s", err, "error inserting question")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting question"})
-		return
+	question.ID = uuid.New()
+	if question.CVID != uuid.Nil {
+		_, err = db.Exec("INSERT INTO questions (id, text, cv_id) VALUES ($1, $2, $3)", question.ID, question.Text, question.CVID)
+		if err != nil {
+			log.Printf("%v %s", err, "error inserting question")
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting question"})
+			return
+		}
+	} else {
+		_, err = db.Exec("INSERT INTO questions (id, text) VALUES ($1, $2)", question.ID, question.Text)
+		if err != nil {
+			log.Printf("%v %s", err, "error inserting question")
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting question"})
+			return
+		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Question created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Question created successfully", "question": question})
 }
