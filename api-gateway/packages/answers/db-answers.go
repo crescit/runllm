@@ -25,6 +25,16 @@ func CreateAnswer(c *gin.Context) {
 		return
 	}
 
+	if answer.QID == uuid.Nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "question id cannot be empty"})
+		return
+	}
+
+	if answer.UserID == uuid.Nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "UserID cannot be empty"})
+		return
+	}
+
 	db, err := pg.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")

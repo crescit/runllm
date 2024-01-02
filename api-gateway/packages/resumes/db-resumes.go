@@ -22,6 +22,11 @@ func CreateResume(c *gin.Context) {
 		return
 	}
 
+	if resume.UserID == uuid.Nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "UserID cannot be empty"})
+		return
+	}
+
 	db, err := pg.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")
@@ -30,12 +35,14 @@ func CreateResume(c *gin.Context) {
 	}
 	defer db.Close()
 
-	_, err = db.Query("INSERT INTO resume (user_id) VALUES ($1)", resume.UserID)
+	var insertedID uuid.UUID
+	err = db.QueryRow("INSERT INTO resume (user_id) VALUES ($1) RETURNING id", resume.UserID).Scan(&insertedID)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting resume")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting resume"})
 		return
 	}
+	resume.ID = insertedID
 
-	c.JSON(http.StatusOK, gin.H{"message": "Resume created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Resume created successfully", "resume": resume})
 }

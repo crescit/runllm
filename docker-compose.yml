@@ -35,6 +35,16 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
 
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+      - db
+
 volumes:
   db:
     driver: local

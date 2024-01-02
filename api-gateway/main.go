@@ -9,6 +9,13 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/crescit/runllm/api-gateway/packages/answers"
+	"github.com/crescit/runllm/api-gateway/packages/interviews"
+	"github.com/crescit/runllm/api-gateway/packages/jobs"
+	"github.com/crescit/runllm/api-gateway/packages/questions"
+	"github.com/crescit/runllm/api-gateway/packages/resumes"
+	"github.com/crescit/runllm/api-gateway/packages/sessions"
+	"github.com/crescit/runllm/api-gateway/packages/users"
 	pg "github.com/crescit/runllm/api-gateway/postgres"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -73,7 +80,13 @@ func main() {
 		pg.RunMigrations()
 	}
 
-	router.POST("/prompt", postPrompt)
+	router.POST("/users", users.CreateUser)
+	router.POST("/resumes", resumes.CreateResume)
+	router.POST("/answers", answers.CreateAnswer)
+	router.POST("/jobs", jobs.CreateJob)
+	router.POST("/questions", questions.CreateQuestion)
+	router.POST("/sessions", sessions.CreateSession)
+	router.POST("/interviews", interviews.CreateInterview)
 
-	router.Run("localhost:8080")
+	router.Run()
 }
