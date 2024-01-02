@@ -10,6 +10,7 @@ from langchain.vectorstores import FAISS
 from pdfminer.utils import open_filename
 import os
 import threading
+from chat import chat_with_model
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -43,7 +44,7 @@ def configure_logging():
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
 
-def process_documents_async(directory, globs, embeddings_model_name):
+def process_documents_async(type, user_id, directory, globs, embeddings_model_name):
     try:
         all_documents = []
         for glob in globs:
@@ -56,13 +57,28 @@ def process_documents_async(directory, globs, embeddings_model_name):
 
         embeddings = HuggingFaceEmbeddings(model_name=embeddings_model_name, model_kwargs={'device': 'cpu'})
         db = FAISS.from_documents(texts, embeddings)
+
+        # Ensure the user_id directory exists
+        user_directory = os.path.join(os.getcwd(), 'faiss', user_id, type)        
+        if not os.path.exists(user_directory):
+            os.makedirs(user_directory)
+
+        # Save the FAISS index under the user_id directory
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        db.save_local(f"faiss_{timestamp}")
+        faiss_path = os.path.join(user_directory, f"faiss_{timestamp}")
+        db.save_local(faiss_path)
+
+        model_path = os.environ['MODEL_PATH']
+        threading.Thread(target=chat_with_model, args=(model_path, faiss_path)).start()
     except Exception as e:
         print(f"An error occurred during document processing: {str(e)}")
 
 def upload_file(request, upload_folder, allowed_extensions):
     try:
+        # Check if the upload folder exists, and create it if not
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
+
         # Check if the 'file' key is in the request files
         print(request)
         if 'file' in request.files:
@@ -88,8 +104,13 @@ def upload_file(request, upload_folder, allowed_extensions):
 @app.route('/write_resume_file', methods=['POST'])
 def write_resume_file():
     try:
-        response = upload_file(request, os.environ['RESUME_DIRECTORY'], allowed_extensions)
-        threading.Thread(target=process_documents_async, args=(os.environ['RESUME_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
+        user_id = request.form.get('user_id')
+        if not user_id:
+            response = {'status': 'error', 'message': 'Missing user_id in the form data'}
+            code = 400  # Bad Request
+            return jsonify(response), code
+        response = upload_file(request, os.environ['RESUME_DIRECTORY'] + "/" + user_id, allowed_extensions)
+        threading.Thread(target=process_documents_async, args=("RESUME",user_id,os.environ['RESUME_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
         return jsonify(response), 200
     except Exception as e:
         response = {'status': 'error', 'message': f'An error occurred: {str(e)}'}
@@ -100,8 +121,13 @@ def write_resume_file():
 @app.route('/write_job_file', methods=['POST'])
 def write_job_file():
     try:
-        response = upload_file(request, os.environ['JOB_DIRECTORY'], allowed_extensions)
-        threading.Thread(target=process_documents_async, args=(os.environ['JOB_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
+        user_id = request.form.get('user_id')
+        if not user_id:
+            response = {'status': 'error', 'message': 'Missing user_id in the form data'}
+            code = 400  # Bad Request
+            return jsonify(response), code
+        response = upload_file(request, os.environ['JOB_DIRECTORY'] + "/" + user_id, allowed_extensions)
+        threading.Thread(target=process_documents_async, args=("JOB",user_id,os.environ['JOB_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
         return jsonify(response), 200
     except Exception as e:
         response = {'status': 'error', 'message': f'An error occurred: {str(e)}'}
