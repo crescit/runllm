@@ -44,24 +44,18 @@ def chat_with_model(promptStr, chat_type, model_path, vector_db_path):
                                             chain_type_kwargs={'prompt': prompt})
         print("loaded receiver")
         print("passing prompt to llm")
-
-        # ask the AI chat about information in our local files
-        # prompt = "say hello"
-        # if chat_type == "JOB":
-        #     prompt = "Give me ten questions for a qualified candidate for the job posting you have the latest information about."
-        # if chat_type == "RESUME":
-        #     prompt = "Give me all the information you have about the person you have the latest resume for."
-        #prompt = "Give me information about the Apple jobs posted on Dec 27, 2023. Write ten questions for job candidates for these jobs."
         print("prompt = " + promptStr)
         output = llm({'query': promptStr})
         result_text = output["result"]
-        print(result_text)
+        question_pattern = regex.compile(r'\d+\.\s*(.*\?)')
+        questions = question_pattern.findall(result_text)
+        print(questions)
         print("done")
 
         # Store the result in a text file
         result_filename = f"result_{datetime.datetime.now().isoformat()}.txt"
         with open(result_filename, "w", encoding="utf-8") as result_file:
-            result_file.write(result_text)
+            result_file.write(questions)
     except Exception as e:
         error_message = f"Error in chat_with_model: {e}\n"
         traceback_info = traceback.format_exc()

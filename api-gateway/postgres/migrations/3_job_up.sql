@@ -1,5 +1,5 @@
 CREATE TABLE "job" (
-    "id" BIGSERIAL PRIMARY KEY,
+    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "type" TEXT,
     "resource_path" TEXT
 );

@@ -1,4 +1,6 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE "user" (
-    "id" BIGSERIAL  PRIMARY KEY,
-    "interview_ids" text[]
+    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    "interview_ids" UUID[]
 );

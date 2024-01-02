@@ -1,10 +1,10 @@
 CREATE TABLE "session" (
-    "id" BIGSERIAL PRIMARY KEY,
+    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "name" TEXT,
     "timestamp" NUMERIC,
-    "question_ids" bigint[],
-    "answer_ids" bigint[],
-    "user_id" BIGSERIAL
+    "question_ids" UUID[],
+    "answer_ids" UUID[],
+    "user_id" UUID
 );
 
-ALTER TABLE "session"  ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id"); 
+ALTER TABLE "session" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
