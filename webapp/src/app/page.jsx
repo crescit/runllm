@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSpeechRecognition } from 'react-speech-kit';
 import Modal from 'react-modal';
-
+import Link from 'next/link';
 
 import styles from './page.module.css';
 import HalEye from './hal';
@@ -78,24 +78,13 @@ export default function Home() {
         <h1>tutr.ai</h1>
         <h3 style={{ color: 'red' }}>Elevate Your Interview Game</h3>
       </div>
-      {/* <p
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: '50px 100px',
-        }}
-      >
-        Run an AI mock interview anytime by providing some basic information to
-        build that repetetive muscle and better prepare for your next interview
-      </p> */}
       <div className={styles.main}>
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            // height: '100vh',
+            height: '80vh',
             backgroundColor: '#000',
             flexDirection: 'column',
           }}
@@ -116,10 +105,10 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* <div
+      <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
           marginBottom: '15px',
           marginTop: '-50px',
@@ -127,13 +116,12 @@ export default function Home() {
           borderBottom: '5px solid red',
         }}
       >
-        <p className={styles.valueprops}>Increase Confidence</p>
-        <p className={styles.valueprops}>Practice Increases Performance</p>
-        <p className={styles.valueprops}>Tangible Results</p>
-        <p className={styles.valueprops}>Interview Anytime</p>
-        <p className={styles.valueprops}>Identify Strengths & Weaknesses</p>
-      </div> */}
-      <div style={{
+        <Link href="/about">About Us</Link>
+        <p style={{ display: 'flex', marginLeft: '20px' }} onClick={openModal}>
+          Provide Feedback
+        </p>
+      </div>
+      {/* <div style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -141,7 +129,7 @@ export default function Home() {
         <button style={{ display: 'flex'}} className={'button'} onClick={openModal}>
           Provide Feedback
         </button>
-      </div>
+      </div> */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
