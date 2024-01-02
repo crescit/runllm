@@ -6,3 +6,4 @@
 /langchain/app.log
 /langchain/resumes/*
 /langchain/faiss*
+/langchain/result*

@@ -44,7 +44,7 @@ def configure_logging():
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
 
-def process_documents_async(type, user_id, directory, globs, embeddings_model_name):
+def process_documents_async(prompt_info, chat_type, user_id, directory, globs, embeddings_model_name):
     try:
         all_documents = []
         for glob in globs:
@@ -59,7 +59,7 @@ def process_documents_async(type, user_id, directory, globs, embeddings_model_na
         db = FAISS.from_documents(texts, embeddings)
 
         # Ensure the user_id directory exists
-        user_directory = os.path.join(os.getcwd(), 'faiss', user_id, type)        
+        user_directory = os.path.join(os.getcwd(), 'faiss', user_id, chat_type)        
         if not os.path.exists(user_directory):
             os.makedirs(user_directory)
 
@@ -69,7 +69,12 @@ def process_documents_async(type, user_id, directory, globs, embeddings_model_na
         db.save_local(faiss_path)
 
         model_path = os.environ['MODEL_PATH']
-        threading.Thread(target=chat_with_model, args=(model_path, faiss_path)).start()
+        prompt = ""
+        if chat_type == "JOB":
+            prompt = "Give me ten questions for a qualified candidate for the job posting: " + prompt_info[0]
+        if chat_type == "RESUME":
+            prompt = "Give me ten questions for candidate: " + prompt_info[1] + "for the job posting: " + prompt_info[0]
+        threading.Thread(target=chat_with_model, args=(prompt, chat_type, model_path, faiss_path)).start()
     except Exception as e:
         print(f"An error occurred during document processing: {str(e)}")
 
@@ -109,8 +114,18 @@ def write_resume_file():
             response = {'status': 'error', 'message': 'Missing user_id in the form data'}
             code = 400  # Bad Request
             return jsonify(response), code
+        job_title = request.form.get('job_title')
+        if not user_id:
+            response = {'status': 'error', 'message': 'Missing job_title in the form data'}
+            code = 400  # Bad Request
+            return jsonify(response), code
+        user_name = request.form.get('user_name')
+        if not user_name:
+            response = {'status': 'error', 'message': 'Missing user_name in the form data'}
+            code = 400  # Bad Request
+            return jsonify(response), code
         response = upload_file(request, os.environ['RESUME_DIRECTORY'] + "/" + user_id, allowed_extensions)
-        threading.Thread(target=process_documents_async, args=("RESUME",user_id,os.environ['RESUME_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
+        threading.Thread(target=process_documents_async, args=([job_title,user_name],"RESUME",user_id,os.environ['RESUME_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
         return jsonify(response), 200
     except Exception as e:
         response = {'status': 'error', 'message': f'An error occurred: {str(e)}'}
@@ -126,8 +141,13 @@ def write_job_file():
             response = {'status': 'error', 'message': 'Missing user_id in the form data'}
             code = 400  # Bad Request
             return jsonify(response), code
+        job_title = request.form.get('job_title')
+        if not user_id:
+            response = {'status': 'error', 'message': 'Missing job_title in the form data'}
+            code = 400  # Bad Request
+            return jsonify(response), code
         response = upload_file(request, os.environ['JOB_DIRECTORY'] + "/" + user_id, allowed_extensions)
-        threading.Thread(target=process_documents_async, args=("JOB",user_id,os.environ['JOB_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
+        threading.Thread(target=process_documents_async, args=([job_title], "JOB",user_id,os.environ['JOB_DIRECTORY'], ['*.pdf', '*.txt'], "sentence-transformers/all-MiniLM-L6-v2")).start()
         return jsonify(response), 200
     except Exception as e:
         response = {'status': 'error', 'message': f'An error occurred: {str(e)}'}

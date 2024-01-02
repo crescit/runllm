@@ -8,10 +8,10 @@ from langchain.vectorstores import FAISS
 from langchain.prompts import PromptTemplate 
 from langchain.chains import RetrievalQA
 
-def chat_with_model(model_path, vector_db_path):
+def chat_with_model(promptStr, chat_type, model_path, vector_db_path):
     try:
         # prepare the template we will use when prompting the AI
-        template = """You are a manager at a mid to large size corporation. You are in charge of interviewing the candidate for jobs which you have the description for.
+        template = """You are a hiring manager at a mid to large size corporation. You are in charge of interviewing the candidate for jobs which you have the description for.
         Context: {context}
         Question: {question}
         Take a deep breath and be polite.
@@ -22,7 +22,7 @@ def chat_with_model(model_path, vector_db_path):
         # load the language model
         llm = CTransformers(model=model_path,
                             model_type='llama',
-                            config={'max_new_tokens': 256, 'temperature': 0.01})
+                            config={'max_new_tokens': 512, 'temperature': 0.01})
         print("loaded wizardlm")
 
         # load the interpreted information from the local database
@@ -46,9 +46,14 @@ def chat_with_model(model_path, vector_db_path):
         print("passing prompt to llm")
 
         # ask the AI chat about information in our local files
-        prompt = "Give me information about the Apple jobs posted on Dec 27, 2023. Write ten questions for job candidates for these jobs."
-        print("prompt = " + prompt)
-        output = llm({'query': prompt})
+        # prompt = "say hello"
+        # if chat_type == "JOB":
+        #     prompt = "Give me ten questions for a qualified candidate for the job posting you have the latest information about."
+        # if chat_type == "RESUME":
+        #     prompt = "Give me all the information you have about the person you have the latest resume for."
+        #prompt = "Give me information about the Apple jobs posted on Dec 27, 2023. Write ten questions for job candidates for these jobs."
+        print("prompt = " + promptStr)
+        output = llm({'query': promptStr})
         result_text = output["result"]
         print(result_text)
         print("done")
@@ -77,6 +82,10 @@ if __name__ == "__main__":
     model_path = os.environ['MODEL_PATH']
     parser = argparse.ArgumentParser(description="Process VECTOR_DB_PATH.")
     parser.add_argument("VECTOR_DB_PATH", help="Path to the vector database.")
+    parser.add_argument("TYPE", help="type of thing you want to generate questions for.")
+    parser.add_argument("prompt", help="prompt for chat agent")
     args = parser.parse_args()
     vector_db_path = args.VECTOR_DB_PATH
-    main(model_path, vector_db_path)
+    TYPE = args.TYPE
+    prompt = args.prompt
+    main(prompt, TYPE ,model_path, vector_db_path)
