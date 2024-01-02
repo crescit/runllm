@@ -1,3 +1,21 @@
+package interviews
+
+import (
+	"log"
+	"net/http"
+
+	pg "github.com/crescit/runllm/api-gateway/postgres"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+type Interview struct {
+	ID         uuid.UUID   `json:"id"`
+	JobID      uuid.UUID   `json:"job_id"`
+	SessionIDs []uuid.UUID `json:"session_ids"`
+	ResumeID   uuid.UUID   `json:"resume_id"`
+}
+
 func CreateInterview(c *gin.Context) {
 	var interview Interview // Assuming you have a struct named Interview for the table
 	if err := c.ShouldBindJSON(&interview); err != nil {

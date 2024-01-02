@@ -1,3 +1,20 @@
+package resumes
+
+import (
+	"log"
+	"net/http"
+
+	pg "github.com/crescit/runllm/api-gateway/postgres"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+// Resume represents the Resume table in the database
+type Resume struct {
+	ID     uuid.UUID `json:"id"`
+	UserID uuid.UUID `json:"user_id"`
+}
+
 func CreateResume(c *gin.Context) {
 	var resume Resume // Assuming you have a struct named Resume for the table
 	if err := c.ShouldBindJSON(&resume); err != nil {

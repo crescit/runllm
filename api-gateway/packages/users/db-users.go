@@ -4,49 +4,15 @@ import (
 	"log"
 	"net/http"
 
+	pg "github.com/crescit/runllm/api-gateway/postgres"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
-pg "github.com/crescit/runllm/api-gateway/postgres"
-
-type Answer struct {
-	QID       int    `json:"q_id"`
-	Score     float64 `json:"score"`
-	Text      string  `json:"text"`
-	UserID    int    `json:"user_id"`
-	Timestamp float64 `json:"timestamp"`
-}
-
-type Job struct {
-	Type         string `json:"type"`
-	ResourcePath string `json:"resource_path"`
-}
-
+// User represents the User table in the database
 type User struct {
-	InterviewIDs []int `json:"interview_ids"`
-}
-
-type Question struct {
-	Text string `json:"text"`
-	CVID int    `json:"cv_id"`
-}
-
-type Session struct {
-	Name       string   `json:"name"`
-	Timestamp  float64  `json:"timestamp"`
-	QuestionIDs []int   `json:"question_ids"`
-	AnswerIDs   []int   `json:"answer_ids"`
-	UserID     int      `json:"user_id"`
-}
-
-type Interview struct {
-	JobID     int   `json:"job_id"`
-	SessionIDs []int `json:"session_ids"`
-	ResumeID   int   `json:"resume_id"`
-}
-
-type Resume struct {
-	UserID int `json:"user_id"`
+	ID           uuid.UUID   `json:"id"`
+	InterviewIDs []uuid.UUID `json:"interview_ids"`
 }
 
 func CreateUser(c *gin.Context) {

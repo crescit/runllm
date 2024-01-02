@@ -1,4 +1,20 @@
-// Define the Job struct if not already defined
+package jobs
+
+import (
+	"log"
+	"net/http"
+
+	pg "github.com/crescit/runllm/api-gateway/postgres"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+// Job represents the Job table in the database
+type Job struct {
+	ID           uuid.UUID `json:"id"`
+	Type         string    `json:"type"`
+	ResourcePath string    `json:"resource_path"`
+}
 
 func CreateJob(c *gin.Context) {
 	var job Job

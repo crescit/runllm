@@ -1,3 +1,23 @@
+package answers
+
+import (
+	"log"
+	"net/http"
+
+	pg "github.com/crescit/runllm/api-gateway/postgres"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+type Answer struct {
+	ID        uuid.UUID `json:"id"`
+	QID       uuid.UUID `json:"q_id"`
+	Score     float64   `json:"score"`
+	Text      string    `json:"text"`
+	UserID    uuid.UUID `json:"user_id"`
+	Timestamp float64   `json:"timestamp"`
+}
+
 func CreateAnswer(c *gin.Context) {
 	var answer Answer // Assuming you have a struct named Answer for the table
 	if err := c.ShouldBindJSON(&answer); err != nil {

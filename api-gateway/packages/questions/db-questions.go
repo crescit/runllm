@@ -1,3 +1,21 @@
+package questions
+
+import (
+	"log"
+	"net/http"
+
+	pg "github.com/crescit/runllm/api-gateway/postgres"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+// Question represents the Question table in the database
+type Question struct {
+	ID   uuid.UUID `json:"id"`
+	Text string    `json:"text"`
+	CVID uuid.UUID `json:"cv_id"`
+}
+
 func CreateQuestion(c *gin.Context) {
 	var question Question // Assuming you have a struct named Question for the table
 	if err := c.ShouldBindJSON(&question); err != nil {

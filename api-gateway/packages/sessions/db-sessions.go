@@ -1,3 +1,23 @@
+package sessions
+
+import (
+	"log"
+	"net/http"
+
+	pg "github.com/crescit/runllm/api-gateway/postgres"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+type Session struct {
+	ID          uuid.UUID   `json:"id"`
+	Name        string      `json:"name"`
+	Timestamp   float64     `json:"timestamp"`
+	QuestionIDs []uuid.UUID `json:"question_ids"`
+	AnswerIDs   []uuid.UUID `json:"answer_ids"`
+	UserID      uuid.UUID   `json:"user_id"`
+}
+
 func CreateSession(c *gin.Context) {
 	var session Session // Assuming you have a struct named Session for the table
 	if err := c.ShouldBindJSON(&session); err != nil {
