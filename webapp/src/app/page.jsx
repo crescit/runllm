@@ -12,14 +12,23 @@ import PlayButton from './PlayButton';
 import AddInterviewButton from './AddInterview';
 
 export default function Home() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [feedbackModalIsOpen, setFeedbackModalIsOpen] = useState(false);
+  const [howItWorksModalIsOpen, setHowItWorksModalIsOpen] = useState(false);
 
-  const openModal = () => {
-    setModalIsOpen(true);
+  const openFeedbackModal = () => {
+    setFeedbackModalIsOpen(true);
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const openHowItWorksModal = () => {
+    setHowItWorksModalIsOpen(true);
+  };
+
+  const closeFeedbackModal = () => {
+    setFeedbackModalIsOpen(false);
+  };
+
+  const closeHowItWorksModal = () => {
+    setHowItWorksModalIsOpen(false);
   };
 
 
@@ -103,6 +112,40 @@ export default function Home() {
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <PlayButton onPlay={() => onRecord()} onStop={() => stop()} />
           </div>
+          <p style={{ display: 'flex', flexDirection: 'row', color: 'white' }} onClick={openHowItWorksModal}>
+          How It Works
+        </p>
+        {/* Can add some How It Works steps here once the product is ready for testing */}
+        <Modal
+        isOpen={howItWorksModalIsOpen}
+        onRequestClose={closeHowItWorksModal}
+        contentLabel='Feedback Modal'
+        style={customStyles} // Apply custom styles
+      >
+        <p style={{ marginBottom: '50px' }} align='center'>
+        </p>
+        <button
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            width: '30px',
+            height: '30px',
+            backgroundColor: '#333  ',
+            color: '#fff',
+            fontSize: '18px',
+            border: 'none',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={setHowItWorksModalIsOpen}
+        >
+          X
+        </button>
+      </Modal>
         </div>
       </div>
       <div
@@ -117,7 +160,7 @@ export default function Home() {
         }}
       >
         <Link href="/about">About Us</Link>
-        <p style={{ display: 'flex', marginLeft: '20px' }} onClick={openModal}>
+        <p style={{ display: 'flex', marginLeft: '20px', cursor: 'pointer' }} onClick={openFeedbackModal}>
           Provide Feedback
         </p>
       </div>
@@ -131,8 +174,8 @@ export default function Home() {
         </button>
       </div> */}
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={feedbackModalIsOpen}
+        onRequestClose={closeFeedbackModal}
         contentLabel='Feedback Modal'
         style={customStyles} // Apply custom styles
       >
@@ -165,7 +208,7 @@ export default function Home() {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onClick={closeModal}
+          onClick={closeFeedbackModal}
         >
           X
         </button>

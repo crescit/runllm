@@ -50,7 +50,7 @@ const AcceptMaxFiles = ({ file_type, ...props }) => {
     <section className="container">
       <div role="button" tabIndex="0" aria-label="File Drop Zone" {...getRootProps({ role: 'button', className: 'dropzone' })}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click</p>
+        <p>Drag 'n' drop file, or click here</p>
       </div>
     </section>
   );
