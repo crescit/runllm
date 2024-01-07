@@ -21,24 +21,24 @@ type Answer struct {
 func CreateAnswer(c *gin.Context) {
 	var answer Answer // Assuming you have a struct named Answer for the table
 	if err := c.ShouldBindJSON(&answer); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	if answer.QID == uuid.Nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "question id cannot be empty"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "question id cannot be empty"})
 		return
 	}
 
 	if answer.UserID == uuid.Nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "UserID cannot be empty"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "UserID cannot be empty"})
 		return
 	}
 
 	db, err := pg.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	defer db.Close()
@@ -49,7 +49,7 @@ func CreateAnswer(c *gin.Context) {
 		answer.ID, answer.QID, answer.Score, answer.Text, answer.UserID, answer.Timestamp)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting answer")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting answer"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error inserting answer"})
 		return
 	}
 

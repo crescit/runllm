@@ -7,3 +7,4 @@ flask==3.0.0
 pdfminer==20191125
 flask-cors==3.0.2
 argparse==1.4.0
+requests==2.31.0

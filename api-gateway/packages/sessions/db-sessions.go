@@ -22,14 +22,14 @@ type Session struct {
 func CreateSession(c *gin.Context) {
 	var session Session // Assuming you have a struct named Session for the table
 	if err := c.ShouldBindJSON(&session); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	db, err := pg2.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	defer db.Close()
@@ -40,7 +40,7 @@ func CreateSession(c *gin.Context) {
 		session.ID, session.Name, session.Timestamp, pq.Array(session.QuestionIDs), pq.Array(session.AnswerIDs), session.UserID)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting session")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting session"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error inserting session"})
 		return
 	}
 

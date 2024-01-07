@@ -20,14 +20,14 @@ type Interview struct {
 func CreateInterview(c *gin.Context) {
 	var interview Interview // Assuming you have a struct named Interview for the table
 	if err := c.ShouldBindJSON(&interview); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	db, err := pg2.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	defer db.Close()
@@ -37,7 +37,7 @@ func CreateInterview(c *gin.Context) {
 		interview.ID, interview.JobID, pq.Array(interview.SessionIDs), interview.ResumeID)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting interview")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting interview"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error inserting interview"})
 		return
 	}
 

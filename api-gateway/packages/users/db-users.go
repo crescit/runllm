@@ -26,7 +26,7 @@ func CreateUser(c *gin.Context) {
 	db, err := pg2.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	defer db.Close()
@@ -36,7 +36,7 @@ func CreateUser(c *gin.Context) {
 	err = row.Scan(&insertedID)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting user")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting user"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error inserting user"})
 		return
 	}
 

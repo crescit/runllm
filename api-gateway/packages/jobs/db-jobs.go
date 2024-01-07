@@ -20,14 +20,14 @@ type Job struct {
 func CreateJob(c *gin.Context) {
 	var job Job
 	if err := c.ShouldBindJSON(&job); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	db, err := pg.NewDatabase()
 	if err != nil {
 		log.Printf("%v %s", err, "error with database connection")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	defer db.Close()
@@ -38,7 +38,7 @@ func CreateJob(c *gin.Context) {
 		job.ID, job.Type, job.ResourcePath)
 	if err != nil {
 		log.Printf("%v %s", err, "error inserting job")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting job"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Error inserting job"})
 		return
 	}
 

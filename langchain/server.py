@@ -42,7 +42,7 @@ def configure_logging():
 
     # Add the handlers to the logger
     logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
+    logger.addHandler(stream_handler)    
 
 def process_documents_async(prompt_info, chat_type, user_id, directory, globs, embeddings_model_name):
     try:
@@ -74,7 +74,7 @@ def process_documents_async(prompt_info, chat_type, user_id, directory, globs, e
             prompt = "Give me ten questions for a qualified candidate for the job posting: " + prompt_info[0]
         if chat_type == "RESUME":
             prompt = "Give me ten questions for candidate: " + prompt_info[1] + " for the job posting: " + prompt_info[0]
-        threading.Thread(target=chat_with_model, args=(prompt, chat_type, model_path, faiss_path)).start()
+        threading.Thread(target=chat_with_model, args=(prompt, chat_type, user_id, model_path, faiss_path, prompt_info[0])).start()
     except Exception as e:
         print(f"An error occurred during document processing: {str(e)}")
 
@@ -115,7 +115,7 @@ def write_resume_file():
             code = 400  # Bad Request
             return jsonify(response), code
         job_title = request.form.get('job_title')
-        if not user_id:
+        if not job_title:
             response = {'status': 'error', 'message': 'Missing job_title in the form data'}
             code = 400  # Bad Request
             return jsonify(response), code
