@@ -14,6 +14,7 @@ const AddInterviewButton = () => {
   };
 
   const [numericValue, setNumericValue] = useState(5);
+  const [interviewLength, setInterviewLength] = useState(30);
 
   const increaseValue = () => {
     setNumericValue((prevValue) => prevValue + 1);
@@ -21,6 +22,10 @@ const AddInterviewButton = () => {
 
   const decreaseValue = () => {
     setNumericValue((prevValue) => Math.max(0, prevValue - 1));
+  };
+
+  const handleInputChange = (event) => {
+    setInterviewLength(event.target.value);
   };
 
   const customStyles = {
@@ -83,8 +88,8 @@ const AddInterviewButton = () => {
               type='text'
               id='positionBox'
               name='positionBox'
-              aria-label='Enter job position here'
-              placeholder='Enter job position here'
+              aria-label='e.g. Software Engineer'
+              placeholder='e.g. Software Engineer'
             />
             <h3 style={{ marginBottom: '15px', marginTop: '15px' }}>
               Interview Length (min.)
@@ -96,8 +101,10 @@ const AddInterviewButton = () => {
               aria-label='Enter interview length numeric minutes'
               min='3'
               step='1'
+              value={interviewLength}
+              onChange={handleInputChange}
             />
-            <h3 style={{ marginBottom: '15px' }} for='dropdown'>
+            <h3 style={{ marginBottom: '15px', marginTop: '15px' }} for='dropdown'>
               Interview Type
             </h3>
             <select
@@ -136,6 +143,29 @@ const AddInterviewButton = () => {
           onClick={closeModal}
         >
           X
+        </button>
+
+        <button
+          style={{
+            position: 'absolute',
+            margin: '40% 50%',
+            width: '30px',
+            height: '30px',
+            backgroundColor: '#333  ',
+            color: 'red',
+            fontSize: '18px',
+            border: '5px solid black ',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'black',
+            padding: '10px 60px',
+          }}
+          onClick={closeModal}
+        >
+          Submit
         </button>
       </Modal>
     </div>
