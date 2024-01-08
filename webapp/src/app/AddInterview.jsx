@@ -15,10 +15,13 @@ const AddInterviewButton = () => {
 
   const [numericValue, setNumericValue] = useState(5);
   const [interviewLength, setInterviewLength] = useState(30);
+<<<<<<< HEAD
   const [job_title, setJob_title] = useState('e.g. Softwre Engineer');
   const [company_name, setCompany_name] = useState('e.g. Microsoft');
   const [user_id, setUser_id] = useState({/* to add */});
   const [user_name, setUser_name] = useState('e.g. John Doe');
+=======
+>>>>>>> origin/mitch-4
 
   const increaseValue = () => {
     setNumericValue((prevValue) => prevValue + 1);
@@ -28,6 +31,7 @@ const AddInterviewButton = () => {
     setNumericValue((prevValue) => Math.max(0, prevValue - 1));
   };
 
+<<<<<<< HEAD
   const handleInterviewLengthChange = (event) => {
     setInterviewLength(event.target.value);
   };
@@ -145,6 +149,7 @@ const AddInterviewButton = () => {
               step='1'
               value={interviewLength}
               onChange={handleInterviewLengthChange}
+              onChange={handleInputChange}
             />
             <h3 style={{ marginBottom: '15px', marginTop: '15px' }} for='dropdown'>
               Interview Type
@@ -191,6 +196,7 @@ const AddInterviewButton = () => {
           style={{
             position: 'absolute',
             margin: '43% 50%',
+            margin: '40% 50%',
             width: '30px',
             height: '30px',
             backgroundColor: '#333  ',
