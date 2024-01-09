@@ -14,6 +14,11 @@ const AddInterviewButton = () => {
   };
 
   const [numericValue, setNumericValue] = useState(5);
+  const [interviewLength, setInterviewLength] = useState(30);
+  const [job_title, setJob_title] = useState('e.g. Softwre Engineer');
+  const [company_name, setCompany_name] = useState('e.g. Microsoft');
+  const [user_id, setUser_id] = useState({/* to add */});
+  const [user_name, setUser_name] = useState('e.g. John Doe');
 
   const increaseValue = () => {
     setNumericValue((prevValue) => prevValue + 1);
@@ -21,6 +26,26 @@ const AddInterviewButton = () => {
 
   const decreaseValue = () => {
     setNumericValue((prevValue) => Math.max(0, prevValue - 1));
+  };
+
+  const handleInterviewLengthChange = (event) => {
+    setInterviewLength(event.target.value);
+  };
+
+  const handleJobTitleChange = (event) => {
+    setJob_title(event.target.value);
+  };
+
+  const handleCompanyNameChange = (event) => {
+    setCompany_name(event.target.value);
+  };
+
+  const handleUserIdChange = (event) => {
+    setUser_id(event.target.value);
+  };
+
+  const handleUserNameChange = (event) => {
+    setUser_name(event.target.value);
   };
 
   const customStyles = {
@@ -60,11 +85,31 @@ const AddInterviewButton = () => {
               marginTop: '25px',
             }}
           >
-            <div style={{ color: 'white' }}>
+            <h3 style={{ marginBottom: '15px', color: 'white' }}>Name</h3>
+            <input
+              type='text'
+              id='usernameBox'
+              name='usernameBox'
+              aria-label='e.g. John Doe'
+              placeholder='e.g. John Doe'
+              value={user_name}
+              onChange={handleUserNameChange}
+            />
+            <h3 style={{ marginBottom: '15px', color: 'white', marginTop: '15px' }}>Company</h3>
+            <input
+              type='text'
+              id='companyBox'
+              name='companyBox'
+              aria-label='e.g. Microsoft'
+              placeholder='e.g. Microsoft'
+              value={company_name}
+              onChange={handleCompanyNameChange}
+            />
+            <div style={{ color: 'white', marginTop: '15px' }}>
               <h3>Upload Resume</h3>
               <DirectoryPicker file_type={'RESUME'} />
             </div>
-            <div style={{ marginTop: '30px', color: 'white' }}>
+            <div style={{ marginTop: '15px', color: 'white' }}>
               <h3>Add Job Description</h3>
               <DirectoryPicker file_type={'JOB'} />
             </div>
@@ -83,8 +128,10 @@ const AddInterviewButton = () => {
               type='text'
               id='positionBox'
               name='positionBox'
-              aria-label='Enter job position here'
-              placeholder='Enter job position here'
+              aria-label='e.g. Software Engineer'
+              placeholder='e.g. Software Engineer'
+              value={job_title}
+              onChange={handleJobTitleChange}
             />
             <h3 style={{ marginBottom: '15px', marginTop: '15px' }}>
               Interview Length (min.)
@@ -96,8 +143,11 @@ const AddInterviewButton = () => {
               aria-label='Enter interview length numeric minutes'
               min='3'
               step='1'
+              value={interviewLength}
+              onChange={handleInterviewLengthChange}
+              onChange={handleInputChange}
             />
-            <h3 style={{ marginBottom: '15px' }} for='dropdown'>
+            <h3 style={{ marginBottom: '15px', marginTop: '15px' }} for='dropdown'>
               Interview Type
             </h3>
             <select
@@ -136,6 +186,30 @@ const AddInterviewButton = () => {
           onClick={closeModal}
         >
           X
+        </button>
+
+        <button
+          style={{
+            position: 'absolute',
+            margin: '43% 50%',
+            margin: '40% 50%',
+            width: '30px',
+            height: '30px',
+            backgroundColor: '#333  ',
+            color: 'red',
+            fontSize: '18px',
+            border: '5px solid black ',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'black',
+            padding: '10px 60px',
+          }}
+          onClick={closeModal}
+        >
+          Submit
         </button>
       </Modal>
     </div>
