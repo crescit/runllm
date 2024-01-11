@@ -54,6 +54,7 @@ def send_questions_http(chat_type, user_id, questions, path, job_title):
     questions_url = f"{base_url}questions"
 
     questions_data = {
+        "user_id": user_id,
         "cv_id": cv_id,
         "questions": questions
     }

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {useDropzone} from 'react-dropzone';
 import axios from 'axios';
+import { langServerUrl  } from './globals';
 
-const AcceptMaxFiles = ({ file_type, ...props }) => {
+const AcceptMaxFiles = ({ file_type, userID, ...props }) => {
   const [FILETYPE, setFile] = useState()
 
   useEffect(() => {
@@ -13,12 +14,13 @@ const AcceptMaxFiles = ({ file_type, ...props }) => {
     acceptedFiles.forEach((file) => {
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('user_id', userID)
 
-      console.log(process.env.NEXT_PUBLIC_LANGSERVER_URL, FILETYPE, file_type);
+      console.log(langServerUrl, FILETYPE, file_type);
 
-      let path = `${process.env.NEXT_PUBLIC_LANGSERVER_URL}/write_job_file`;
+      let path = `${langServerUrl}/write_job_file`;
       if (file_type === 'RESUME') {
-        path = `${process.env.NEXT_PUBLIC_LANGSERVER_URL}/write_resume_file`;
+        path = `${langServerUrl}/write_resume_file`;
       }
 
       axios.post(path, formData)

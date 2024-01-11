@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import DirectoryPicker from './directorypicker';
 
-const AddInterviewButton = () => {
+const AddInterviewButton = ({ userID }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const openModal = () => {
@@ -107,11 +107,11 @@ const AddInterviewButton = () => {
             />
             <div style={{ color: 'white', marginTop: '15px' }}>
               <h3>Upload Resume</h3>
-              <DirectoryPicker file_type={'RESUME'} />
+              <DirectoryPicker file_type={'RESUME'} userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
             </div>
             <div style={{ marginTop: '15px', color: 'white' }}>
               <h3>Add Job Description</h3>
-              <DirectoryPicker file_type={'JOB'} />
+              <DirectoryPicker file_type={'JOB'} userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
             </div>
           </container>
           <container
@@ -145,7 +145,6 @@ const AddInterviewButton = () => {
               step='1'
               value={interviewLength}
               onChange={handleInterviewLengthChange}
-              onChange={handleInputChange}
             />
             <h3 style={{ marginBottom: '15px', marginTop: '15px' }} for='dropdown'>
               Interview Type
@@ -190,7 +189,6 @@ const AddInterviewButton = () => {
 
         <button
           style={{
-            position: 'absolute',
             margin: '43% 50%',
             margin: '40% 50%',
             width: '30px',

@@ -39,7 +39,7 @@ func NewDatabase() (*sqlx.DB, error) {
 }
 
 // RunMigrations sets up the database environment
-func RunMigrations() {
+func RunMigrations() error {
 	var usr = os.Getenv("PG_USER")
 	var pass = os.Getenv("PG_PASS")
 	var host = os.Getenv("PG_HOST")
@@ -54,13 +54,14 @@ func RunMigrations() {
 	//if os.Getenv("RUNNING_DEV_SERVER") == "true" {
 	//	url = pgURL
 	// } else {
-	log.Print(awsURL)
+	//log.Print(awsURL)
 	url = awsURL
 	//}
 
 	ex, err := os.Executable()
 	if err != nil {
-		panic(err)
+		log.Printf("%v", err)
+		return err
 	}
 	exPath := filepath.Dir(ex)
 	fmt.Println(exPath)
@@ -68,12 +69,19 @@ func RunMigrations() {
 	db, err := sql.Open("postgres", url)
 	if err != nil {
 		log.Printf("%v", err)
+		return err
 	}
 
-	migrator, _ := gomigrate.NewMigrator(db, gomigrate.Postgres{}, "./postgres/migrations")
+	migrator, err := gomigrate.NewMigrator(db, gomigrate.Postgres{}, "./postgres/migrations")
+	if err != nil {
+		log.Printf("%v", err)
+		return err
+	}
 
 	err = migrator.Migrate()
 	if err != nil {
-		log.Println(err)
+		log.Printf("%v", err)
+		return err
 	}
+	return nil
 }

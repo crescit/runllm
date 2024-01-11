@@ -10,25 +10,19 @@ import HalEye from './hal';
 import SinusoidalSpeechBubble from './sine';
 import PlayButton from './PlayButton';
 import AddInterviewButton from './AddInterview';
+import Questions from './Questions'
+
 
 export default function Home() {
   const [feedbackModalIsOpen, setFeedbackModalIsOpen] = useState(false);
-  const [howItWorksModalIsOpen, setHowItWorksModalIsOpen] = useState(false);
 
   const openFeedbackModal = () => {
     setFeedbackModalIsOpen(true);
   };
 
-  const openHowItWorksModal = () => {
-    setHowItWorksModalIsOpen(true);
-  };
 
   const closeFeedbackModal = () => {
     setFeedbackModalIsOpen(false);
-  };
-
-  const closeHowItWorksModal = () => {
-    setHowItWorksModalIsOpen(false);
   };
 
 
@@ -108,47 +102,17 @@ export default function Home() {
             <HalEye />
             <SinusoidalSpeechBubble text={text} />
           </container>
-          <AddInterviewButton />
+          <AddInterviewButton userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <PlayButton onPlay={() => onRecord()} onStop={() => stop()} />
           </div>
-          <p style={{ display: 'flex', flexDirection: 'row', color: 'white' }} onClick={openHowItWorksModal}>
-          How It Works
-        </p>
-        {/* Can add some How It Works steps here once the product is ready for testing */}
-        <Modal
-        isOpen={howItWorksModalIsOpen}
-        onRequestClose={closeHowItWorksModal}
-        contentLabel='Feedback Modal'
-        style={customStyles} // Apply custom styles
-      >
-        <p style={{ marginBottom: '50px' }} align='center'>
-        </p>
-        <button
-          style={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            width: '30px',
-            height: '30px',
-            backgroundColor: '#333  ',
-            color: '#fff',
-            fontSize: '18px',
-            border: 'none',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onClick={setHowItWorksModalIsOpen}
-        >
-          X
-        </button>
-      </Modal>
-        </div>
+       </div>
       </div>
+      <Questions userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
+
+      {/** Begin footer */}
       <div
+        id="footer"
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -159,20 +123,13 @@ export default function Home() {
           borderBottom: '5px solid red',
         }}
       >
-        <Link href="/about">About Us</Link>
+
+      <Link href="/about">About Us</Link>
         <p style={{ display: 'flex', marginLeft: '20px', cursor: 'pointer' }} onClick={openFeedbackModal}>
           Provide Feedback
         </p>
       </div>
-      {/* <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <button style={{ display: 'flex'}} className={'button'} onClick={openModal}>
-          Provide Feedback
-        </button>
-      </div> */}
+    
       <Modal
         isOpen={feedbackModalIsOpen}
         onRequestClose={closeFeedbackModal}
