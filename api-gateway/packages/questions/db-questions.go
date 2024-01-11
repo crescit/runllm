@@ -108,21 +108,35 @@ func CreateQuestions(webSocketManager *WebSocketManager) gin.HandlerFunc {
 			return
 		}
 
-		go func() {
-			// Notify the specific client identified by userID about the questions
-			userID, err := uuid.Parse(*questionsData.UserID)
-			if err != nil {
-				c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		userIDStr := *questionsData.UserID
+		userID, err := uuid.Parse(userIDStr)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+			return
+		}
+
+		if client, found := webSocketManager.clients[userID]; found {
+			websocketEvent := websocketEvent{
+				Event:     "questions-added",
+				Questions: questions,
+			}
+
+			// Add a select statement to handle potential blocking if the client's channel is full
+			select {
+			case client <- websocketEvent:
+				// Event sent successfully
+			default:
+				// Handle the case where the client's channel is full
+				log.Printf("Failed to send WebSocket event to user %v. Client channel is full.\n", userID)
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to send WebSocket event"})
 				return
 			}
-			if client, found := webSocketManager.clients[userID]; found {
-				websocketEvent := websocketEvent{
-					Event:     "questions-added",
-					Questions: questions,
-				}
-				client <- websocketEvent
-			}
-		}()
+		} else {
+			// Handle the case where the client is not found
+			log.Printf("WebSocket client for user %v not found. %v \n", userID, webSocketManager.clients)
+			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "WebSocket client not found"})
+			return
+		}
 
 		c.JSON(200, gin.H{"questions": questions})
 	}

@@ -2,6 +2,7 @@ package questions
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -34,12 +35,28 @@ type questionsEvent struct {
 
 // InitializeWebSocketManager creates and initializes a WebSocketManager.
 func InitializeWebSocketManager() *WebSocketManager {
-	return &WebSocketManager{
-		clients:    make(map[uuid.UUID]chan websocketEvent),
-		register:   make(chan clientRegistration),
+	wsm := &WebSocketManager{
+		clients:    make(map[uuid.UUID]chan websocketEvent, 100),
+		register:   make(chan clientRegistration, 100),
 		unregister: make(chan uuid.UUID),
 		questions:  make(chan questionsEvent),
 	}
+
+	// Goroutine to handle registrations and unregistrations
+	go func() {
+		for {
+			select {
+			case registration := <-wsm.register:
+				// Handle registration
+				wsm.clients[registration.UserID] = registration.Channel
+			case userID := <-wsm.unregister:
+				// Handle unregistration
+				delete(wsm.clients, userID)
+			}
+		}
+	}()
+
+	return wsm
 }
 
 var upgrader = websocket.Upgrader{
@@ -129,12 +146,17 @@ func handleWebSocketRegistration(wsm *WebSocketManager, registration clientRegis
 	select {
 	case wsm.register <- registration:
 		log.Printf("WebSocket client for user %v registered\n", registration.UserID)
-		defer func() {
-			wsm.unregister <- registration.UserID
-			log.Printf("WebSocket client for user %v unregistered\n", registration.UserID)
-		}()
+		return
 	default:
-		log.Printf("Failed to register WebSocket client for user %v\n", registration.UserID)
+		err := fmt.Errorf("failed to register WebSocket client for user %v", registration.UserID)
+		log.Println(err)
+		log.Printf("Channel state: len=%d, cap=%d\n", len(wsm.register), cap(wsm.register))
 		// Handle failure, perhaps return an error or retry
+		return
 	}
+	// todo might need to unregister
+	// defer func() {
+	// 		wsm.unregister <- registration.UserID
+	// 		log.Printf("WebSocket client for user %v unregistered\n", registration.UserID)
+	// 	}()
 }

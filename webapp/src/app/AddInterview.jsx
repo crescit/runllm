@@ -15,7 +15,7 @@ const AddInterviewButton = ({ userID }) => {
 
   const [numericValue, setNumericValue] = useState(5);
   const [interviewLength, setInterviewLength] = useState(30);
-  const [job_title, setJob_title] = useState('e.g. Softwre Engineer');
+  const [job_title, setJob_title] = useState('e.g. Software Engineer');
   const [company_name, setCompany_name] = useState('e.g. Microsoft');
   const [user_id, setUser_id] = useState({/* to add */});
   const [user_name, setUser_name] = useState('e.g. John Doe');
@@ -107,11 +107,11 @@ const AddInterviewButton = ({ userID }) => {
             />
             <div style={{ color: 'white', marginTop: '15px' }}>
               <h3>Upload Resume</h3>
-              <DirectoryPicker file_type={'RESUME'} userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
+              <DirectoryPicker file_type={'RESUME'} userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'} jobTitle={job_title} companyName={company_name} userName={user_name}/>
             </div>
             <div style={{ marginTop: '15px', color: 'white' }}>
               <h3>Add Job Description</h3>
-              <DirectoryPicker file_type={'JOB'} userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
+              <DirectoryPicker file_type={'JOB'} userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'} jobTitle={job_title} companyName={company_name} userName={user_name}/>
             </div>
           </container>
           <container

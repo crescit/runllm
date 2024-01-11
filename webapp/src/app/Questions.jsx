@@ -18,7 +18,7 @@ const Questions = ({ userID }) => {
     // Listen for messages
     socket.addEventListener('message', (event) => {
       const eventData = JSON.parse(event.data);
-  
+      
       // Handle WebSocket messages
       console.log('WebSocket message received:', eventData);
     });

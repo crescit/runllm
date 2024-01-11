@@ -3,8 +3,17 @@ import {useDropzone} from 'react-dropzone';
 import axios from 'axios';
 import { langServerUrl  } from './globals';
 
-const AcceptMaxFiles = ({ file_type, userID, ...props }) => {
+const AcceptMaxFiles = ({ file_type, userID, jobTitle, companyName, userName, ...props }) => {
   const [FILETYPE, setFile] = useState()
+  const [JOBTITLE, setJobTitle] = useState()
+  const [USERNAME, setUsername] = useState()
+  const [USERID, setUserID] = useState()
+
+  useEffect(() => {
+    setJobTitle(jobTitle + ', ' + companyName)
+    setUsername(userName)
+    setUserID(userID)
+  }, [jobTitle, companyName, userName, userID])
 
   useEffect(() => {
     setFile(file_type)
@@ -14,8 +23,12 @@ const AcceptMaxFiles = ({ file_type, userID, ...props }) => {
     acceptedFiles.forEach((file) => {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('user_id', userID)
-
+      // formData.append('user_id', userID)
+      // formData.append('job_title', jobTitle + ', ' + companyName)
+      // formData.append('user_name', userName)
+      formData.append('user_id', USERID)
+      formData.append('job_title', JOBTITLE)
+      formData.append('user_name', USERNAME)
       console.log(langServerUrl, FILETYPE, file_type);
 
       let path = `${langServerUrl}/write_job_file`;
@@ -31,7 +44,7 @@ const AcceptMaxFiles = ({ file_type, userID, ...props }) => {
           console.error('Error uploading file:', error);
         });
     });
-  }, [FILETYPE, file_type]);
+  }, [FILETYPE, file_type, USERID, JOBTITLE, USERNAME]);
 
 
   const {
