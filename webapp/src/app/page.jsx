@@ -12,6 +12,7 @@ import PlayButton from './PlayButton';
 import AddInterviewButton from './AddInterview';
 import Questions from './Questions'
 import { QuestionsProvider } from './context/QuestionContext'
+import PrevButton from './PrevQuestionButton'
 
 export default function Home() {
   const [feedbackModalIsOpen, setFeedbackModalIsOpen] = useState(false);
@@ -105,6 +106,7 @@ export default function Home() {
           </container>
           <AddInterviewButton userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <PrevButton />
             <PlayButton onPlay={() => onRecord()} onStop={() => stop()} />
           </div>
        </div>

@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles.css'
+import { useQuestions } from './context/QuestionContext';
 
 const PlayButton = ({ onPlay, onStop }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+  const { questions, currentQuestion, updateCurrentQuestion } = useQuestions();
+
+  const handleNext = () => {
+    if (questions.length > 0) {
+      const currentIndex = questions.findIndex(question => question.text === currentQuestion);
+      const nextIndex = (currentIndex + 1) % questions.length;
+      updateCurrentQuestion(questions[nextIndex].text);
+    }
+  };
 
   const handleClick = () => {
     if (isRecording) {
       setIsRecording(false);
       onStop(); // Call the stop callback
+      handleNext()
     } else {
       setIsRecording(true);
       onPlay();

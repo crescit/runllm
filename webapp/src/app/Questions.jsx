@@ -34,14 +34,16 @@ const Questions = ({ userID }) => {
   }, [ userID]);
 
   return (
-    <div>
-      <h2>Questions</h2>
-      <ul>
-        {questions.map(question => (
-          <li key={question.id}>{question.text}</li>
-        ))}
-      </ul>
-    </div>
+    // <div>
+    //   <h2>Questions</h2>
+    //   <ul>
+    //     {questions.map(question => (
+    //       <li key={question.id}>{question.text}</li>
+    //     ))}
+    //   </ul>
+    // </div>
+    <>
+    </>
   );
 };
 
