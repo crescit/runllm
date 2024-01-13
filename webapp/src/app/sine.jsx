@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useQuestions } from './context/QuestionContext';
 
 const SinusoidalSpeechBubble = ({ text }) => {
     const [clientData, setClientData] = useState(null);
+    const { questions, currentQuestion } = useQuestions();
+
     useEffect(() => {
       const keyframes = `
         @keyframes sinusoidal-animation {
@@ -17,11 +20,12 @@ const SinusoidalSpeechBubble = ({ text }) => {
       const styleTag = document.createElement('style');
       styleTag.innerHTML = keyframes;
       document.head.appendChild(styleTag);
-      setClientData(text);
+      const sineText = questions.length >= 1 ? currentQuestion : text 
+      setClientData(sineText);
       return () => {
         document.head.removeChild(styleTag);
       };
-    }, [text]);
+    }, [text, questions, currentQuestion]);
   
     const bubbleStyle = {
         position: 'relative',

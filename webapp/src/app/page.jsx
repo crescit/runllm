@@ -11,7 +11,7 @@ import SinusoidalSpeechBubble from './sine';
 import PlayButton from './PlayButton';
 import AddInterviewButton from './AddInterview';
 import Questions from './Questions'
-
+import { QuestionsProvider } from './context/QuestionContext'
 
 export default function Home() {
   const [feedbackModalIsOpen, setFeedbackModalIsOpen] = useState(false);
@@ -69,6 +69,7 @@ export default function Home() {
 
   return (
     <main>
+      <QuestionsProvider>
       <div
         style={{
           alignItems: 'center',
@@ -170,6 +171,7 @@ export default function Home() {
           X
         </button>
       </Modal>
+      </QuestionsProvider>
     </main>
   );
 }
