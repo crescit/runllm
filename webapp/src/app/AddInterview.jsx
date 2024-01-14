@@ -50,7 +50,7 @@ const AddInterviewButton = ({ userID }) => {
 
   const customStyles = {
     content: {
-      width: '50%', // Set your desired width
+      width: '80%', // Set your desired width
       height: '50%', // Set your desired height
       top: '50%', // Center vertically
       left: '50%', // Center horizontally
@@ -77,7 +77,23 @@ const AddInterviewButton = ({ userID }) => {
         <h2 style={{ textAlign: 'center', color: 'white' }}>
           Create Mock Interview
         </h2>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <style>
+            {`
+              @media only screen and (max-width: 768px) {
+                container {
+                  margin-right: 0; // Remove right margin on smaller screens
+                  margin-left: 0; // Remove left margin on smaller screens
+                }
+                button {
+                  padding: '10px 30px'; // Adjusted padding for better mobile responsiveness
+                }
+                .super-container {
+                  flex-direction: column !important;
+                }
+              }
+            `}
+        </style>
+        <div class="super-container" style={{ display: 'flex', flexDirection: 'row' }}>
           <container
             style={{
               display: 'flex',
