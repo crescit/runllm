@@ -8,8 +8,8 @@ const testData = [
 ]
 
 export const QuestionsProvider = ({ children }) => {
-  //const [questions, setQuestions] = useState([]);
-  const [questions, setQuestions] = useState(testData);
+  const [questions, setQuestions] = useState([]);
+  // const [questions, setQuestions] = useState(testData);
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
   const updateQuestions = (newQuestions) => {
