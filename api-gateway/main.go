@@ -32,7 +32,7 @@ func main() {
 	}
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:5001"}
+	config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:5001", "*.ngrok-free.app"}
 	router.Use(cors.New(config))
 
 	questionsWebSocketManager := questions.InitializeWebSocketManager()
@@ -48,4 +48,5 @@ func main() {
 	router.POST("/answers", answers.CreateAnswer)
 
 	router.Run()
+
 }

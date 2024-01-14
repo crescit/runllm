@@ -1,0 +1,11 @@
+# in ngrok.yml
+authtoken: 2avqnhPCXxEW4YTR3v0IDffVpQh_3NnRWA7gh1aueELVob6Gx
+tunnels:
+    nginx:
+        proto: http
+        addr: 80
+    lang:
+        proto: http
+        addr: 5001
+version: "2"
+region: us

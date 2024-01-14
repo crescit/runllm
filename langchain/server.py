@@ -14,7 +14,7 @@ from chat import chat_with_model
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.config['CORS_ORIGINS'] =  ["http://localhost:3000", "http://localhost:8080", "http://localhost"]
+app.config['CORS_ORIGINS'] = ["http://localhost:3000", "http://localhost:8080", "http://localhost", "https://*.ngrok-free.app", "https://b791-2600-1010-a020-4203-cddb-bd43-d44e-5b1a.ngrok-free.app"]
 CORS(app)
 allowed_extensions = {'pdf', 'txt'}
 

@@ -1,6 +1,18 @@
 version: '3.4'
 
 services:
+  webapp:
+    build: 
+      context: ./webapp
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_LANGSERVER_URL=http://localhost:5001
+      - NEXT_PUBLIC_APISERVER_URL=https://2452-2600-1010-a020-4203-cddb-bd43-d44e-5b1a.ngrok-free.app/api
+    depends_on:
+      - api-gateway
+    env_file: ./webapp/.env.docker
   api-gateway:
     build: 
       context: ./api-gateway
