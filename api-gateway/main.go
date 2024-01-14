@@ -12,6 +12,7 @@ import (
 	"github.com/crescit/runllm/api-gateway/packages/sessions"
 	"github.com/crescit/runllm/api-gateway/packages/users"
 	pg "github.com/crescit/runllm/api-gateway/postgres"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -29,6 +30,10 @@ func main() {
 	if os.Getenv("RUN_POSTGRES_MIGRATIONS") == "true" {
 		pg.RunMigrations()
 	}
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:5001"}
+	router.Use(cors.New(config))
 
 	questionsWebSocketManager := questions.InitializeWebSocketManager()
 

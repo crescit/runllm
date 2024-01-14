@@ -59,6 +59,7 @@ const AddInterviewButton = ({ userID }) => {
       alignItems: 'center',
       display: 'flex',
       flexDirection: 'column',
+      minHeight: '360px'
     },
   };
 
@@ -189,11 +190,7 @@ const AddInterviewButton = ({ userID }) => {
 
         <button
           style={{
-            margin: '43% 50%',
-            margin: '40% 50%',
-            width: '30px',
-            height: '30px',
-            backgroundColor: '#333  ',
+            backgroundColor: '#333',
             color: 'red',
             fontSize: '18px',
             border: '5px solid black ',

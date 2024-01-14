@@ -1,11 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styles from './styles.css'
 import { useQuestions } from './context/QuestionContext';
+import { v4 as uuidv4 } from 'uuid';
+import { apiServerUrl } from './globals';
+import { useSpeechRecognition } from 'react-speech-kit';
 
-const PlayButton = ({ onPlay, onStop }) => {
+const PlayButton = ({ userID }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const { questions, currentQuestion, updateCurrentQuestion } = useQuestions();
+  const [answer, setAnswer] = useState('')
+
+  const { listen, listening, stop } = useSpeechRecognition({
+    onResult: (result) => {
+      // Handle the recognized speech result
+      console.log('Speech Recognized:', result, answer, result.indexOf(answer));
+      console.log(result)
+      setAnswer(result)
+    },
+  });
+
+  const onRecord = () => {
+    listen();
+  };
 
   const handleNext = () => {
     if (questions.length > 0) {
@@ -15,14 +33,39 @@ const PlayButton = ({ onPlay, onStop }) => {
     }
   };
 
-  const handleClick = () => {
+  const onStop = async () => {
+    const matchedQuestion = questions.find(question => question.text === currentQuestion);
+    stop()
+
+    if (matchedQuestion) {
+      const answerData = {
+        id: uuidv4(),
+        q_id: matchedQuestion.id,
+        // score: /* calculate score if needed */,
+        text: answer,
+        user_id: userID,
+        timestamp: Date.now(),
+      };
+
+      try {
+        const response = await axios.post(`${apiServerUrl}/answers`, answerData);
+      } catch (error) {
+        console.error('Error posting answer:', error);
+      }
+
+      // Update currentQuestion
+      updateCurrentQuestion(matchedQuestion);
+    }
+  };
+
+  const handleClick = async () => {
     if (isRecording) {
       setIsRecording(false);
-      onStop(); // Call the stop callback
-      handleNext()
+      await onStop();
+      handleNext();
     } else {
       setIsRecording(true);
-      onPlay();
+      onRecord();
     }
   };
 

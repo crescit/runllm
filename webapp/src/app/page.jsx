@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSpeechRecognition } from 'react-speech-kit';
 import Modal from 'react-modal';
 import Link from 'next/link';
 
@@ -26,7 +25,6 @@ export default function Home() {
     setFeedbackModalIsOpen(false);
   };
 
-
   const halQuotes = [
     "Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over. Just what do you think you're doing, Dave?",
     "I know that you and Frank were planning to disconnect me, and I'm afraid that's something I cannot allow to happen.",
@@ -34,14 +32,6 @@ export default function Home() {
     "Without your space helmet, Dave? You're going to find that rather difficult.",
     " I know I've made some very poor decisions recently, but I can give you my complete assurance that my work will be back to normal.",
   ];
-
-  const { listen, listening, stop } = useSpeechRecognition({
-    onResult: (result) => {
-      // Handle the recognized speech result
-      console.log('Speech Recognized:', result);
-      changeText(result);
-    },
-  });
 
   const [text, changeText] = useState(
     halQuotes[Math.floor(Math.random() * halQuotes.length)]
@@ -51,11 +41,6 @@ export default function Home() {
     changeText(halQuotes[Math.floor(Math.random() * halQuotes.length)]);
   }, []);
 
-  const onRecord = () => {
-    changeText(halQuotes[Math.floor(Math.random() * halQuotes.length)]);
-    console.log(text);
-    listen();
-  };
 
   const customStyles = {
     content: {
@@ -85,21 +70,10 @@ export default function Home() {
       </div>
       <div className={styles.main}>
         <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '80vh',
-            backgroundColor: '#000',
-            flexDirection: 'column',
-          }}
+         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh', backgroundColor: '#000', flexDirection: 'column' }}
         >
           <container
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
+            style={{ display: 'flex',  flexDirection: 'column', alignItems: 'center', }}
           >
             <HalEye />
             <SinusoidalSpeechBubble text={text} />
@@ -107,24 +81,15 @@ export default function Home() {
           <AddInterviewButton userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <PrevButton />
-            <PlayButton onPlay={() => onRecord()} onStop={() => stop()} />
+            <PlayButton userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
           </div>
        </div>
       </div>
       <Questions userID={'d0bd5d2a-3392-4eb7-b8f3-455f2d85292e'}/>
 
       {/** Begin footer */}
-      <div
-        id="footer"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          marginBottom: '15px',
-          marginTop: '-50px',
-          borderTop: '5px solid red',
-          borderBottom: '5px solid red',
-        }}
+      <div id="footer"
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '15px', marginTop: '-50px', borderTop: '5px solid red', borderBottom: '5px solid red' }}
       >
 
       <Link href="/about">About Us</Link>
@@ -151,23 +116,7 @@ export default function Home() {
             Loading…
           </iframe>
         </p>
-        <button
-          style={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            width: '30px',
-            height: '30px',
-            backgroundColor: '#333  ',
-            color: '#fff',
-            fontSize: '18px',
-            border: 'none',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+        <button style={{ position: 'absolute', top: '10px', right: '10px', width: '30px', height: '30px', backgroundColor: '#333', color: '#fff', fontSize: '18px', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           onClick={closeFeedbackModal}
         >
           X

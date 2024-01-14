@@ -21,6 +21,7 @@
     "react-dropzone": "^14.2.3",
     "react-modal": "^3.16.1",
     "react-speech-kit": "^3.0.1",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "uuid": "^9.0.1"
   }
 }
