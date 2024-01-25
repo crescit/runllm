@@ -32,7 +32,9 @@ func main() {
 	}
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:5001", "*.ngrok-free.app"}
+	//config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:5001", "*.ngrok-free.app"}
+	// TODO remove me testing
+	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
 
 	questionsWebSocketManager := questions.InitializeWebSocketManager()

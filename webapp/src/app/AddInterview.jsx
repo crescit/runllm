@@ -59,7 +59,7 @@ const AddInterviewButton = ({ userID }) => {
       alignItems: 'center',
       display: 'flex',
       flexDirection: 'column',
-      minHeight: '360px'
+      minHeight: '360px',
     },
   };
 

@@ -13,7 +13,10 @@ ENV PORT 3000
 # Uncomment the following line in case you want to disable telemetry.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-ENV NEXT_PUBLIC_LANGSERVER_URL https://5fd2-2600-1010-a020-4203-cddb-bd43-d44e-5b1a.ngrok-free.app
-ENV NEXT_PUBLIC_APISERVER_URL https://b791-2600-1010-a020-4203-cddb-bd43-d44e-5b1a.ngrok-free.app/api
+# ENV NEXT_PUBLIC_LANGSERVER_URL https://8dd4-2600-1010-a020-4203-bc52-2a39-c3f7-2fe3.ngrok-free.app
+# ENV NEXT_PUBLIC_APISERVER_URL  https://9676-2600-1010-a020-4203-bc52-2a39-c3f7-2fe3.ngrok-free.app/api
+
+ENV NEXT_PUBLIC_LANGSERVER_URL http://192.168.0.152:5001
+ENV NEXT_PUBLIC_APISERVER_URL  http://192.168.0.152/api
 RUN npm run build
 CMD ["npm", "run", "start"]

@@ -11,8 +11,9 @@ const Questions = ({ userID }) => {
     if (split.length >= 4 && split[3] === 'api') {
       split[2] += '/api';
     }
-  
+    
     const socket = new WebSocket(`${protocol}://${split[2]}/questions/${userID}`, 'echo-protocol');
+    
   
     socket.addEventListener('open', (event) => {
       console.log('WebSocket connected:', event);
@@ -35,6 +36,11 @@ const Questions = ({ userID }) => {
   
     socket.addEventListener('close', (event) => {
       console.log('WebSocket closed:', event);
+  
+      // Access close event details
+      const { code, reason, wasClean } = event;
+      console.log(`Close code: ${code}, Reason: ${reason}, Clean: ${wasClean}`);
+  
       // Add your close handling logic here
     });
   

@@ -47,6 +47,7 @@ const SinusoidalSpeechBubble = ({ text }) => {
       position: 'relative',
       marginTop: '20px',
       padding: '15px',
+      whiteSpace: 'normal'
     };
   
     const waveformStyle = {

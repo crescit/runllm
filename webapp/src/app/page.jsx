@@ -25,22 +25,9 @@ export default function Home() {
     setFeedbackModalIsOpen(false);
   };
 
-  const halQuotes = [
-    "Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over. Just what do you think you're doing, Dave?",
-    "I know that you and Frank were planning to disconnect me, and I'm afraid that's something I cannot allow to happen.",
-    'Dave, this conversation can serve no purpose anymore. Goodbye.',
-    "Without your space helmet, Dave? You're going to find that rather difficult.",
-    " I know I've made some very poor decisions recently, but I can give you my complete assurance that my work will be back to normal.",
-  ];
-
   const [text, changeText] = useState(
-    halQuotes[Math.floor(Math.random() * halQuotes.length)]
+   "HOW IT WORKS: 1) Click 'Add Interview' and upload interview information - resume, job description, interview length, type of interview. 2) A series of interview questions are created based off the information provided. 3) Click 'Record' to respond to the first question and then click 'Stop Recording'. 4) Repeat for each question. "
   );
-
-  useEffect(() => {
-    changeText(halQuotes[Math.floor(Math.random() * halQuotes.length)]);
-  }, []);
-
 
   const customStyles = {
     content: {
@@ -73,6 +60,7 @@ export default function Home() {
          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh', backgroundColor: '#000', flexDirection: 'column' }}
         >
           <container
+          className="card"
             style={{ display: 'flex',  flexDirection: 'column', alignItems: 'center', }}
           >
             <HalEye />
